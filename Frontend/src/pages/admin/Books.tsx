@@ -1,373 +1,165 @@
-import { useState, useEffect } from 'react';
-import {
-  Box,
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
-  CircularProgress,
-  Alert,
-  TextField,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Card,
-  CardMedia,
-  IconButton,
-} from '@mui/material';
-import { Book } from '../../types';
-import api from '../../utils/api';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+"use client"
 
-export default function Books() {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
-  const [newBook, setNewBook] = useState({
-    title: '',
-    author: '',
-    ISBN: '',
-    quantity: 0,
-    publishedDate: '',
-    genre: '',
-    copiesAvailable: 0,
-    chargePerDay: 0,
-    description: '',
-  });
-  const [imageFile, setImageFile] = useState<File | null>(null);
+import { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
+import { api } from "../../services/api"
+import type { Book } from "../../types"
+import BookCard from "../../components/BookCard"
+
+const Books = () => {
+  const [books, setBooks] = useState<Book[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [genre, setGenre] = useState("")
+  const [genres, setGenres] = useState<string[]>([])
 
   useEffect(() => {
-    fetchBooks();
-  }, []);
+    const fetchBooks = async () => {
+      try {
+        setLoading(true)
+        const { data } = await api.get<Book[]>("/books")
+        setBooks(data)
 
-  const fetchBooks = async () => {
-    try {
-      const { data } = await api.get('/api/books');
-      setBooks(data);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to fetch books');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleAddBook = async () => {
-    try {
-      const formData = new FormData();
-      Object.entries(newBook).forEach(([key, value]) => {
-        formData.append(key, value.toString());
-      });
-      if (imageFile) {
-        formData.append('image', imageFile);
+        // Extract unique genres
+        const uniqueGenres = Array.from(new Set(data.map((book) => book.genre)))
+        setGenres(uniqueGenres)
+      } catch (error) {
+        console.error("Error fetching books:", error)
+        setError("Failed to fetch books. Please try again later.")
+      } finally {
+        setLoading(false)
       }
-
-      await api.post('/api/books', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      setOpenDialog(false);
-      setNewBook({
-        title: '',
-        author: '',
-        ISBN: '',
-        quantity: 0,
-        publishedDate: '',
-        genre: '',
-        copiesAvailable: 0,
-        chargePerDay: 0,
-        description: '',
-      });
-      setImageFile(null);
-      fetchBooks();
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to add book');
     }
-  };
 
-  const handleUpdateBook = async () => {
-    if (!selectedBook) return;
+    fetchBooks()
+  }, [])
+
+  const handleDeleteBook = async (id: string) => {
+    if (!window.confirm("Are you sure you want to delete this book?")) {
+      return
+    }
 
     try {
-      const formData = new FormData();
-      Object.entries(newBook).forEach(([key, value]) => {
-        formData.append(key, value.toString());
-      });
-      if (imageFile) {
-        formData.append('image', imageFile);
-      }
-
-      await api.put(`/api/books/${selectedBook.id}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      setOpenDialog(false);
-      setSelectedBook(null);
-      setNewBook({
-        title: '',
-        author: '',
-        ISBN: '',
-        quantity: 0,
-        publishedDate: '',
-        genre: '',
-        copiesAvailable: 0,
-        chargePerDay: 0,
-        description: '',
-      });
-      setImageFile(null);
-      fetchBooks();
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to update book');
+      await api.delete(`/books/${id}`)
+      setBooks(books.filter((book) => book._id !== id))
+    } catch (error) {
+      console.error("Error deleting book:", error)
+      setError("Failed to delete the book. Please try again later.")
     }
-  };
-
-  const handleDeleteBook = async (bookId: string) => {
-    try {
-      await api.delete(`/api/books/${bookId}`);
-      fetchBooks();
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to delete book');
-    }
-  };
-
-  const handleEditBook = (book: Book) => {
-    setSelectedBook(book);
-    setNewBook({
-      title: book.title,
-      author: book.author,
-      ISBN: book.ISBN,
-      quantity: book.quantity,
-      publishedDate: book.publishedDate,
-      genre: book.genre,
-      copiesAvailable: book.copiesAvailable,
-      chargePerDay: book.chargePerDay,
-      description: book.description || '',
-    });
-    setOpenDialog(true);
-  };
-
-  if (isLoading) {
-    return (
-      <Box display="flex" justifyContent="center" p={3}>
-        <CircularProgress />
-      </Box>
-    );
   }
 
-  if (error) {
-    return (
-      <Box p={3}>
-        <Alert severity="error">{error}</Alert>
-      </Box>
-    );
-  }
+  const filteredBooks = books.filter((book) => {
+    const matchesSearch =
+      book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      book.author.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesGenre = genre === "" || book.genre === genre
+    return matchesSearch && matchesGenre
+  })
 
   return (
-    <Box>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h5">Books</Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            setSelectedBook(null);
-            setOpenDialog(true);
-          }}
-        >
-          Add Book
-        </Button>
-      </Box>
+    <div className="container mx-auto">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-gray-900">Manage Books</h1>
+        <Link to="/admin/books/add" className="btn btn-primary">
+          Add New Book
+        </Link>
+      </div>
 
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }, gap: 3 }}>
-        {books.map((book) => (
-          <Box key={book.id}>
-            <Card>
-              {book.imageUrl && (
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={book.imageUrl}
-                  alt={book.title}
-                />
-              )}
-              <Box p={2}>
-                <Typography variant="h6">{book.title}</Typography>
-                <Typography color="textSecondary">{book.author}</Typography>
-                <Typography variant="body2" color="textSecondary">
-                  ISBN: {book.ISBN}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  Available: {book.copiesAvailable} / {book.quantity}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  Charge per day: ${book.chargePerDay}
-                </Typography>
-                <Box display="flex" justifyContent="flex-end" mt={2}>
-                  <IconButton onClick={() => handleEditBook(book)}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton onClick={() => handleDeleteBook(book.id)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </Box>
-              </Box>
-            </Card>
-          </Box>
-        ))}
-      </Box>
+      <div className="p-4 mb-6 bg-white rounded-lg shadow-sm">
+        <div className="flex flex-col gap-4 md:flex-row">
+          <div className="flex-1">
+            <label htmlFor="search" className="block text-sm font-medium text-gray-700">
+              Search
+            </label>
+            <input
+              type="text"
+              id="search"
+              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              placeholder="Search by title or author"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div className="w-full md:w-64">
+            <label htmlFor="genre" className="block text-sm font-medium text-gray-700">
+              Filter by Genre
+            </label>
+            <select
+              id="genre"
+              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              value={genre}
+              onChange={(e) => setGenre(e.target.value)}
+            >
+              <option value="">All Genres</option>
+              {genres.map((g) => (
+                <option key={g} value={g}>
+                  {g}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
 
-      <Dialog
-        open={openDialog}
-        onClose={() => setOpenDialog(false)}
-        maxWidth="md"
-        fullWidth
-      >
-        <DialogTitle>
-          {selectedBook ? 'Edit Book' : 'Add New Book'}
-        </DialogTitle>
-        <DialogContent>
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' }, gap: 2, mt: 1 }}>
-            <Box>
-              <TextField
-                fullWidth
-                label="Title"
-                value={newBook.title}
-                onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
-              />
-            </Box>
-            <Box>
-              <TextField
-                fullWidth
-                label="Author"
-                value={newBook.author}
-                onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
-              />
-            </Box>
-            <Box>
-              <TextField
-                fullWidth
-                label="ISBN"
-                value={newBook.ISBN}
-                onChange={(e) => setNewBook({ ...newBook, ISBN: e.target.value })}
-              />
-            </Box>
-            <Box>
-              <TextField
-                fullWidth
-                label="Genre"
-                value={newBook.genre}
-                onChange={(e) => setNewBook({ ...newBook, genre: e.target.value })}
-              />
-            </Box>
-            <Box>
-              <TextField
-                fullWidth
-                label="Published Date"
-                type="date"
-                value={newBook.publishedDate}
-                onChange={(e) =>
-                  setNewBook({ ...newBook, publishedDate: e.target.value })
-                }
-                InputLabelProps={{ shrink: true }}
-              />
-            </Box>
-            <Box>
-              <TextField
-                fullWidth
-                label="Quantity"
-                type="number"
-                value={newBook.quantity}
-                onChange={(e) =>
-                  setNewBook({ ...newBook, quantity: parseInt(e.target.value) })
-                }
-              />
-            </Box>
-            <Box>
-              <TextField
-                fullWidth
-                label="Copies Available"
-                type="number"
-                value={newBook.copiesAvailable}
-                onChange={(e) =>
-                  setNewBook({
-                    ...newBook,
-                    copiesAvailable: parseInt(e.target.value),
-                  })
-                }
-              />
-            </Box>
-            <Box>
-              <TextField
-                fullWidth
-                label="Charge per Day"
-                type="number"
-                value={newBook.chargePerDay}
-                onChange={(e) =>
-                  setNewBook({
-                    ...newBook,
-                    chargePerDay: parseFloat(e.target.value),
-                  })
-                }
-              />
-            </Box>
-            <Box sx={{ gridColumn: '1 / -1' }}>
-              <TextField
-                fullWidth
-                label="Description"
-                multiline
-                rows={4}
-                value={newBook.description}
-                onChange={(e) =>
-                  setNewBook({ ...newBook, description: e.target.value })
-                }
-              />
-            </Box>
-            <Box sx={{ gridColumn: '1 / -1' }}>
-              <Button
-                variant="contained"
-                component="label"
-                fullWidth
-              >
-                Upload Image
-                <input
-                  type="file"
-                  hidden
-                  accept="image/*"
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      setImageFile(e.target.files[0]);
-                    }
-                  }}
-                />
-              </Button>
-              {imageFile && (
-                <Typography variant="body2" sx={{ mt: 1 }}>
-                  Selected file: {imageFile.name}
-                </Typography>
-              )}
-            </Box>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-          <Button
-            onClick={selectedBook ? handleUpdateBook : handleAddBook}
-            color="primary"
-          >
-            {selectedBook ? 'Update' : 'Add'}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
-  );
-} 
+      {error && <div className="p-4 mb-6 text-red-700 bg-red-100 rounded-md">{error}</div>}
+
+      {loading ? (
+        <div className="flex items-center justify-center h-64">
+          <div className="w-12 h-12 border-4 border-blue-600 rounded-full border-t-transparent animate-spin"></div>
+        </div>
+      ) : filteredBooks.length === 0 ? (
+        <div className="p-8 text-center text-gray-500 bg-white rounded-lg shadow-sm">
+          <svg className="w-12 h-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <p className="mt-4 text-lg font-medium">No books found</p>
+          <p className="mt-2">Try adjusting your search or filter criteria</p>
+        </div>
+      ) : (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {filteredBooks.map((book) => (
+            <div key={book._id} className="relative overflow-hidden bg-white rounded-lg shadow-sm">
+              <div className="absolute top-2 right-2 flex space-x-1">
+                <Link
+                  to={`/admin/books/edit/${book._id}`}
+                  className="p-1 text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
+                  </svg>
+                </Link>
+                <button
+                  onClick={() => handleDeleteBook(book._id)}
+                  className="p-1 text-white bg-red-600 rounded-md hover:bg-red-700"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <BookCard book={book} />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default Books

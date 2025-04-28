@@ -1,103 +1,87 @@
-import { useState, useEffect } from 'react';
-import {
-  Box,
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
-  CircularProgress,
-  Alert,
-} from '@mui/material';
-import { Borrow } from '../../types';
-import api from '../../utils/api';
+"use client"
 
-export default function OverduePayments() {
-  const [overdueBorrows, setOverdueBorrows] = useState<Borrow[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+import { useState, useEffect } from "react"
+import { api } from "../../services/api"
+import type { Borrow, Bill } from "../../types"
+import BorrowCard from "../../components/BorrowCard"
+
+const OverduePayments = () => {
+  const [borrows, setBorrows] = useState<Borrow[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    fetchOverdueBorrows();
-  }, []);
-
-  const fetchOverdueBorrows = async () => {
-    try {
-      const { data } = await api.get('/api/borrow/overdue');
-      setOverdueBorrows(data);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to fetch overdue borrows');
-    } finally {
-      setIsLoading(false);
+    const fetchOverduePayments = async () => {
+      try {
+        setLoading(true)
+        const { data } = await api.get<Borrow[]>("/borrow/pending-payment")
+        setBorrows(data)
+      } catch (error) {
+        console.error("Error fetching overdue payments:", error)
+        setError("Failed to fetch overdue payments. Please try again later.")
+      } finally {
+        setLoading(false)
+      }
     }
-  };
 
-  const handleMarkAsPaid = async (borrowId: string) => {
+    fetchOverduePayments()
+  }, [])
+
+  const handleUpdatePayment = async (borrowId: string) => {
     try {
-      await api.put(`/api/borrow/${borrowId}/pay`);
-      fetchOverdueBorrows();
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to mark as paid');
+      // Update the borrow status locally
+      setBorrows(borrows.filter((borrow) => borrow._id !== borrowId))
+    } catch (error) {
+      console.error("Error updating payment status:", error)
     }
-  };
-
-  if (isLoading) {
-    return (
-      <Box display="flex" justifyContent="center" p={3}>
-        <CircularProgress />
-      </Box>
-    );
   }
 
-  if (error) {
-    return (
-      <Box p={3}>
-        <Alert severity="error">{error}</Alert>
-      </Box>
-    );
+  const handleGenerateBill = async (borrowId: string, bill: Bill) => {
+    try {
+      // No need to update the UI as the BorrowCard component will show the bill
+      console.log("Bill generated:", bill)
+    } catch (error) {
+      console.error("Error generating bill:", error)
+    }
   }
 
   return (
-    <Box>
-      <Typography variant="h5" gutterBottom>
-        Overdue Payments
-      </Typography>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>User</TableCell>
-              <TableCell>Book</TableCell>
-              <TableCell>Due Date</TableCell>
-              <TableCell>Fine Amount</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {overdueBorrows.map((borrow) => (
-              <TableRow key={borrow.id}>
-                <TableCell>{borrow.user.name}</TableCell>
-                <TableCell>{borrow.book.title}</TableCell>
-                <TableCell>{new Date(borrow.dueDate).toLocaleDateString()}</TableCell>
-                <TableCell>${borrow.fineAmount}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleMarkAsPaid(borrow.id)}
-                  >
-                    Mark as Paid
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
-  );
-} 
+    <div className="container mx-auto">
+      <h1 className="mb-6 text-2xl font-bold text-gray-900">Overdue Payments</h1>
+
+      {error && <div className="p-4 mb-6 text-red-700 bg-red-100 rounded-md">{error}</div>}
+
+      {loading ? (
+        <div className="flex items-center justify-center h-64">
+          <div className="w-12 h-12 border-4 border-blue-600 rounded-full border-t-transparent animate-spin"></div>
+        </div>
+      ) : borrows.length === 0 ? (
+        <div className="p-8 text-center text-gray-500 bg-white rounded-lg shadow-sm">
+          <svg className="w-12 h-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <p className="mt-4 text-lg font-medium">No overdue payments</p>
+          <p className="mt-2">There are no overdue payments at the moment.</p>
+        </div>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {borrows.map((borrow) => (
+            <BorrowCard
+              key={borrow._id}
+              borrow={borrow}
+              onUpdatePayment={handleUpdatePayment}
+              onGenerateBill={handleGenerateBill}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default OverduePayments

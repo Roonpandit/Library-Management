@@ -109,56 +109,68 @@ export const returnBook = async (req: Request, res: Response) => {
     const borrowedTill = new Date(borrow.borrowedTill);
 
     // Calculate days borrowed
-  const daysBorrowed = Math.ceil((returnDate.getTime() - borrowDate.getTime()) / (1000 * 60 * 60 * 24));
+    const daysBorrowed = Math.ceil((returnDate.getTime() - borrowDate.getTime()) / (1000 * 60 * 60 * 24));
   
-  // Calculate if return is late
-  const isLate = returnDate > borrowedTill;
+    // Calculate if return is late
+    const isLate = returnDate > borrowedTill;
   
-  // Calculate charges
-  const regularCharge = daysBorrowed * book!.chargePerDay;
-  
-  // Update borrow record
-  borrow.returnDate = returnDate;
-  borrow.bill = {
-    amount: regularCharge,
-    lateFee: 0, // Will be added by admin if late
-    totalAmount: regularCharge,
-    generatedDate: new Date()
-  };
-  await borrow.save();
-
-  // Update user's borrowed books
-  const user = await User.findById(userId);
-  if (user) {
-    const borrowedBookIndex = user.borrowedBooks.findIndex(
-      (b) => b.bookId.toString() === borrow.bookId.toString() && !b.returnDate
-    );
+    // Calculate regular charge
+    const regularCharge = daysBorrowed * book!.chargePerDay;
     
-    if (borrowedBookIndex !== -1) {
-      user.borrowedBooks[borrowedBookIndex].returnDate = returnDate;
-      user.borrowedBooks[borrowedBookIndex].bill = {
-        amount: regularCharge,
-        lateFee: 0,
-        totalAmount: regularCharge,
-        generatedDate: new Date()
-      };
-      await user.save();
+    // Calculate late fee - 5 times daily charge for each day late
+    let lateFee = 0;
+    if (isLate) {
+      const daysLate = Math.ceil((returnDate.getTime() - borrowedTill.getTime()) / (1000 * 60 * 60 * 24));
+      lateFee = 5 * book!.chargePerDay * daysLate;
     }
-  }
-
-  res.json({
-    message: 'Book returned successfully',
-    bill: {
+    
+    // Calculate total amount
+    const totalAmount = regularCharge + lateFee;
+  
+    // Update borrow record
+    borrow.returnDate = returnDate;
+    borrow.bill = {
       amount: regularCharge,
-      lateFee: 0,
-      totalAmount: regularCharge,
-      isLate
+      lateFee: lateFee,
+      totalAmount: totalAmount,
+      isLate: isLate,
+      generatedDate: new Date()
+    };
+    await borrow.save();
+
+    // Update user's borrowed books
+    const user = await User.findById(userId);
+    if (user) {
+      const borrowedBookIndex = user.borrowedBooks.findIndex(
+        (b) => b.bookId.toString() === borrow.bookId.toString() && !b.returnDate
+      );
+      
+      if (borrowedBookIndex !== -1) {
+        user.borrowedBooks[borrowedBookIndex].returnDate = returnDate;
+        user.borrowedBooks[borrowedBookIndex].bill = {
+          amount: regularCharge,
+          lateFee: lateFee,
+          totalAmount: totalAmount,
+          isLate: isLate,
+          generatedDate: new Date()
+        };
+        await user.save();
+      }
     }
-  });
-} catch (error) {
-  console.error(error);
-  res.status(500).json({ message: 'Server Error' });
-}
+
+    res.json({
+      message: 'Book returned successfully',
+      bill: {
+        amount: regularCharge,
+        lateFee: lateFee,
+        totalAmount: totalAmount,
+        isLate
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
 };
 
 // @desc    Generate bill for returned book

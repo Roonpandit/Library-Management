@@ -1,159 +1,115 @@
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import {
-  Box,
-  Typography,
-  Grid as MuiGrid,
-  Card,
-  CardContent,
-  CardMedia,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  CircularProgress,
-  Alert,
-} from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { Book } from '../types';
-import { RootState } from '../store';
-import api from '../utils/api';
+"use client"
 
-export default function Books() {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
-  const [borrowDate, setBorrowDate] = useState<Date | null>(null);
-  const [openDialog, setOpenDialog] = useState(false);
-  const { user } = useSelector((state: RootState) => state.auth);
+import { useState, useEffect } from "react"
+import { api } from "../services/api"
+import type { Book } from "../types"
+import BookCard from "../components/BookCard"
+
+const Books = () => {
+  const [books, setBooks] = useState<Book[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [genre, setGenre] = useState("")
+  const [genres, setGenres] = useState<string[]>([])
 
   useEffect(() => {
-    fetchBooks();
-  }, []);
+    const fetchBooks = async () => {
+      try {
+        setLoading(true)
+        const { data } = await api.get<Book[]>("/books")
+        setBooks(data)
 
-  const fetchBooks = async () => {
-    try {
-      const { data } = await api.get('/api/books');
-      setBooks(data);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to fetch books');
-    } finally {
-      setIsLoading(false);
+        // Extract unique genres
+        const uniqueGenres = Array.from(new Set(data.map((book) => book.genre)))
+        setGenres(uniqueGenres)
+      } catch (error) {
+        console.error("Error fetching books:", error)
+        setError("Failed to fetch books. Please try again later.")
+      } finally {
+        setLoading(false)
+      }
     }
-  };
 
-  const handleBorrow = async () => {
-    if (!selectedBook || !borrowDate) return;
+    fetchBooks()
+  }, [])
 
-    try {
-      await api.post('/api/borrow', {
-        bookId: selectedBook._id,
-        borrowedTill: borrowDate.toISOString(),
-      });
-      setOpenDialog(false);
-      fetchBooks(); // Refresh books list
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to borrow book');
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
-        <CircularProgress />
-      </Box>
-    );
-  }
+  const filteredBooks = books.filter((book) => {
+    const matchesSearch =
+      book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      book.author.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesGenre = genre === "" || book.genre === genre
+    return matchesSearch && matchesGenre
+  })
 
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
-        Available Books
-      </Typography>
-      {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error}
-        </Alert>
-      )}
-      <MuiGrid container spacing={3}>
-        {books.map((book) => (
-          <MuiGrid key={book._id} item xs={12} sm={6} md={4}>
-            <Card>
-              {book.imageUrl && (
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={book.imageUrl}
-                  alt={book.title}
-                />
-              )}
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {book.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  By {book.author}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Genre: {book.genre}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Available Copies: {book.copiesAvailable}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Charge per Day: ${book.chargePerDay}
-                </Typography>
-                {book.description && (
-                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                    {book.description}
-                  </Typography>
-                )}
-                <Button
-                  variant="contained"
-                  fullWidth
-                  sx={{ mt: 2 }}
-                  disabled={book.copiesAvailable === 0}
-                  onClick={() => {
-                    setSelectedBook(book);
-                    setOpenDialog(true);
-                  }}
-                >
-                  {book.copiesAvailable === 0 ? 'Not Available' : 'Borrow'}
-                </Button>
-              </CardContent>
-            </Card>
-          </MuiGrid>
-        ))}
-      </MuiGrid>
+    <div className="container mx-auto">
+      <h1 className="mb-6 text-2xl font-bold text-gray-900">Browse Books</h1>
 
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Borrow Book</DialogTitle>
-        <DialogContent>
-          <Typography variant="body1" gutterBottom>
-            {selectedBook?.title}
-          </Typography>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              label="Return Date"
-              value={borrowDate}
-              onChange={(newValue: Date | null) => setBorrowDate(newValue)}
-              minDate={new Date()}
-              sx={{ mt: 2, width: '100%' }}
+      <div className="p-4 mb-6 bg-white rounded-lg shadow-sm">
+        <div className="flex flex-col gap-4 md:flex-row">
+          <div className="flex-1">
+            <label htmlFor="search" className="block text-sm font-medium text-gray-700">
+              Search
+            </label>
+            <input
+              type="text"
+              id="search"
+              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              placeholder="Search by title or author"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
-          </LocalizationProvider>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-          <Button onClick={handleBorrow} variant="contained" disabled={!borrowDate}>
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
-  );
-} 
+          </div>
+          <div className="w-full md:w-64">
+            <label htmlFor="genre" className="block text-sm font-medium text-gray-700">
+              Filter by Genre
+            </label>
+            <select
+              id="genre"
+              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              value={genre}
+              onChange={(e) => setGenre(e.target.value)}
+            >
+              <option value="">All Genres</option>
+              {genres.map((g) => (
+                <option key={g} value={g}>
+                  {g}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {loading ? (
+        <div className="flex items-center justify-center h-64">
+          <div className="w-12 h-12 border-4 border-blue-600 rounded-full border-t-transparent animate-spin"></div>
+        </div>
+      ) : error ? (
+        <div className="p-4 text-red-700 bg-red-100 rounded-md">{error}</div>
+      ) : filteredBooks.length === 0 ? (
+        <div className="p-8 text-center text-gray-500">
+          <svg className="w-12 h-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <p className="mt-4 text-lg font-medium">No books found</p>
+          <p className="mt-2">Try adjusting your search or filter criteria</p>
+        </div>
+      ) : (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {filteredBooks.map((book) => (
+            <BookCard key={book._id} book={book} />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default Books

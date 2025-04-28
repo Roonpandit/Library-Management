@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { api } from "../../services/api"
-import type { Borrow, Bill } from "../../types"
+import type { Borrow } from "../../types"
 import BorrowCard from "../../components/BorrowCard"
 
 const OverduePayments = () => {
@@ -36,7 +36,7 @@ const OverduePayments = () => {
     }
   }
 
-  const handleGenerateBill = async (borrowId: string, bill: Bill) => {
+  const handleGenerateBill = async (bill: String) => {
     try {
       // No need to update the UI as the BorrowCard component will show the bill
       console.log("Bill generated:", bill)

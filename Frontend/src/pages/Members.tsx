@@ -1,8 +1,6 @@
 import React from 'react'
-import { useAuth } from '../contexts/AuthContext'
 
 const Members: React.FC = () => {
-  const { user } = useAuth()
 
   return (
     <div className="container mx-auto">

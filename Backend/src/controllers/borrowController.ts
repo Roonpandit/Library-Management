@@ -206,6 +206,7 @@ try {
       ...borrow.bill,
       lateFee: Number(lateFee),
       totalAmount,
+      isLate: borrow.bill.isLate || lateFee > 0,
       generatedDate: new Date()
     };
   } else {
@@ -230,6 +231,7 @@ try {
         ...user.borrowedBooks[borrowedBookIndex].bill!,
         lateFee: Number(lateFee),
         totalAmount,
+        isLate: user.borrowedBooks[borrowedBookIndex].bill!.isLate || lateFee > 0,
         generatedDate: new Date()
       };
       

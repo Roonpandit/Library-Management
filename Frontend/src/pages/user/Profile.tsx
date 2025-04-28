@@ -3,10 +3,8 @@
 import { useState, useEffect, type FormEvent } from "react"
 import { api } from "../../services/api"
 import type { User } from "../../types"
-import { useAuth } from "../../contexts/AuthContext"
 
 const Profile = () => {
-  const { user: authUser } = useAuth()
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)

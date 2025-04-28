@@ -4,7 +4,6 @@ import { api } from '../../services/api';
 import type { Borrow, Book, User, Bill } from '../../types';
 import BillModal from '../../components/BillModal';
 import { useAuth } from '../../contexts/AuthContext';
-import { useBillGeneration } from "../../hooks/useBillGeneration";
 
 const GenerateBill: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,7 +13,6 @@ const GenerateBill: React.FC = () => {
   const [borrow, setBorrow] = useState<Borrow | null>(null);
   const [book, setBook] = useState<Book | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const [bill, setBill] = useState<Bill | null>(null);
   const [lateFee, setLateFee] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -158,11 +156,7 @@ const GenerateBill: React.FC = () => {
   }
   
   // Add null check for book before using it
-  const borrowedDate = new Date(borrow.borrowDate);
   const returnDate = borrow.returnDate ? new Date(borrow.returnDate) : null;
-  const daysUsed = returnDate ? Math.ceil((returnDate.getTime() - borrowedDate.getTime()) / (1000 * 3600 * 24)) : 0;
-  const baseAmount = book ? daysUsed * book.chargePerDay : 0;
-  const totalAmount = baseAmount + (generatedBill?.lateFee || lateFee);
   
   return (
     <div className="container mx-auto">
@@ -276,7 +270,7 @@ const GenerateBill: React.FC = () => {
                 <p className="text-gray-600">Late Fee:</p>
                 <p className="font-medium">${generatedBill.lateFee.toFixed(2)}</p>
                 <p className="text-gray-600">Total:</p>
-                <p className="font-medium font-bold">${generatedBill.totalAmount.toFixed(2)}</p>
+                <p className=" font-bold">${generatedBill.totalAmount.toFixed(2)}</p>
               </div>
             </div>
           )}

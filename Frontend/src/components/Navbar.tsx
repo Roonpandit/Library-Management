@@ -12,7 +12,7 @@ interface NavbarProps {
   onLogout?: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ onMenuClick, isAuthenticated, onLogout }) => {
+const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onLogout }) => {
   const { user, logout: authLogout } = useAuth()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [notificationsOpen, setNotificationsOpen] = useState(false)

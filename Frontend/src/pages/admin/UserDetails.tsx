@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useParams, Link, useNavigate } from "react-router-dom"
+import { useParams, Link } from "react-router-dom"
 import { api } from "../../services/api"
 import type { User, Borrow, Notification } from "../../types"
 import BorrowCard from "../../components/BorrowCard"
@@ -12,7 +12,6 @@ interface UserWithBorrows extends User {
 
 const UserDetails = () => {
   const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
   const [user, setUser] = useState<UserWithBorrows | null>(null)
   const [borrows, setBorrows] = useState<Borrow[]>([])
   const [loading, setLoading] = useState(true)

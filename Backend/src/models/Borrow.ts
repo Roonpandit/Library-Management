@@ -11,6 +11,7 @@ export interface IBorrow extends Document {
     amount: number;
     lateFee: number;
     totalAmount: number;
+    isLate: boolean;
     generatedDate: Date;
   };
 }
@@ -47,6 +48,7 @@ const BorrowSchema: Schema = new Schema(
       amount: Number,
       lateFee: Number,
       totalAmount: Number,
+      isLate: Boolean,
       generatedDate: Date
     }
   },

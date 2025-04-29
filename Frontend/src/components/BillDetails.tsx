@@ -54,7 +54,7 @@ const BillDetails: React.FC<BillDetailsProps> = ({ bill, isPreview = false, onPr
           <>
             <p className="text-gray-500">Generated On:</p>
             <p className="font-medium text-right">
-              {new Date(bill.generatedDate).toLocaleDateString()}
+              {new Date(bill.generatedDate).toLocaleString()}
             </p>
           </>
         )}

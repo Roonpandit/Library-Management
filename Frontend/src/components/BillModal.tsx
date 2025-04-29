@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import type { Bill, Borrow, Book, User } from '../types';
 import BillDetails from './BillDetails';
 
@@ -14,6 +14,13 @@ interface BillModalProps {
 const BillModal: React.FC<BillModalProps> = ({ isOpen, onClose, bill, borrow, book, user }) => {
   const printRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (isOpen) {
+      console.log('BillModal - Book:', book);
+      console.log('BillModal - Bill:', bill);
+    }
+  }, [isOpen, book, bill]);
+
   if (!isOpen) return null;
 
   const handlePrint = () => {
@@ -26,6 +33,9 @@ const BillModal: React.FC<BillModalProps> = ({ isOpen, onClose, bill, borrow, bo
     document.body.innerHTML = originalContents;
     window.location.reload();
   };
+
+  // Get ISBN either from book object or bill object
+  const isbn = book?.ISBN || bill.bookISBN;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -46,13 +56,13 @@ const BillModal: React.FC<BillModalProps> = ({ isOpen, onClose, bill, borrow, bo
                     <p className="text-sm text-gray-600">Book Rental Receipt</p>
                   </div>
 
-                  {(book || borrow || user) && (
+                  {(book || borrow || user || isbn) && (
                     <div className="mb-6 text-sm">
                       {book && (
                         <div className="mb-2">
                           <p className="font-medium">Book: {book.title}</p>
                           <p className="text-gray-600">Author: {book.author}</p>
-                          <p className="text-gray-600">ISBN: {book.ISBN}</p>
+                          {isbn && <p className="text-gray-600">ISBN: {isbn}</p>}
                         </div>
                       )}
                       

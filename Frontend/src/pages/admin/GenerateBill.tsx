@@ -75,12 +75,23 @@ const GenerateBill: React.FC = () => {
       const { data } = await api.post(`/borrow/${id}/bill`, {
         lateFee: lateFee
       });
-      setGeneratedBill(data.bill);
+      
+      // Ensure the bill has ISBN if the book is available but ISBN is not in bill
+      let updatedBill = data.bill;
+      if (book && book.ISBN && !updatedBill.bookISBN) {
+        updatedBill = {
+          ...updatedBill,
+          bookISBN: book.ISBN
+        };
+      }
+      
+      setGeneratedBill(updatedBill);
       // Update the borrow with the new bill
       setBorrow({
         ...borrow!,
-        bill: data.bill
+        bill: updatedBill
       });
+      
       setShowBillModal(true);
       setGenerating(false);
     } catch (err) {
@@ -304,6 +315,7 @@ const GenerateBill: React.FC = () => {
           bill={generatedBill}
           borrow={borrow}
           book={book}
+          user={user || undefined}
         />
       )}
     </div>

@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react";
 import type { Bill, Borrow, Book, User } from "../types";
 import BillDetails from "./BillDetails";
 import { Link } from "react-router-dom";
+import html2pdf from 'html2pdf.js';
 
 interface BillModalProps {
   isOpen: boolean;
@@ -72,6 +73,23 @@ const BillModal: React.FC<BillModalProps> = ({
     document.head.removeChild(style);
     document.body.innerHTML = originalContents;
     window.location.reload();
+  };
+
+  const handleSavePDF = () => {
+    const element = printRef.current;
+    if (!element) return;
+
+    // Configuration for PDF export
+    const options = {
+      margin: [10, 10, 10, 10],
+      filename: `BookNest_Receipt_${new Date().toISOString().split('T')[0]}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    // Generate PDF
+    html2pdf().from(element).set(options).save();
   };
 
   // Get ISBN either from book object or bill object
@@ -188,6 +206,13 @@ const BillModal: React.FC<BillModalProps> = ({
           </div>
 
           <div className="px-4 py-3 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse">
+            <button
+              type="button"
+              onClick={handleSavePDF}
+              className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-green-600 border border-transparent rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
+            >
+              Save as PDF
+            </button>
             <button
               type="button"
               onClick={handlePrint}

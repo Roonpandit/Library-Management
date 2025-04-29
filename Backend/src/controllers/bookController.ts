@@ -48,10 +48,12 @@ export const createBook = async (req: Request, res: Response) => {
 
     let imageUrl;
     if (req.file) {
-      // Upload to cloudinary
+      // Upload to cloudinary with high quality settings
       const result = await cloudinary.uploader.upload(req.file.path, {
         folder: 'library',
-        transformation: [{ width: 500, height: 700, crop: 'fit' }]
+        quality: "auto:best",
+        fetch_format: "auto",
+        flags: "preserve_transparency"
       });
       
       imageUrl = result.secure_url;
@@ -93,10 +95,12 @@ export const updateBook = async (req: Request, res: Response) => {
 
     let imageUrl = book.imageUrl;
     if (req.file) {
-      // Upload to cloudinary
+      // Upload to cloudinary with high quality settings
       const result = await cloudinary.uploader.upload(req.file.path, {
         folder: 'library',
-        transformation: [{ width: 500, height: 700, crop: 'fit' }]
+        quality: "auto:best",
+        fetch_format: "auto",
+        flags: "preserve_transparency"
       });
       
       imageUrl = result.secure_url;

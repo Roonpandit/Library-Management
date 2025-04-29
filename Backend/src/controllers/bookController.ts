@@ -4,6 +4,24 @@ import { validate, bookSchema } from '../utils/validation';
 import cloudinary from '../config/cloudinary';
 import fs from 'fs';
 
+// Helper function to extract public_id from Cloudinary URL
+const getPublicIdFromUrl = (url: string): string | null => {
+  if (!url) return null;
+  
+  try {
+    // Format: https://res.cloudinary.com/your_cloud_name/image/upload/v1234567890/library/image_name.jpg
+    const splitUrl = url.split('/');
+    // Get the part after 'library/' and remove file extension
+    const filenameWithExt = splitUrl[splitUrl.length - 1];
+    const foldername = splitUrl[splitUrl.length - 2];
+    const publicId = `${foldername}/${filenameWithExt.split('.')[0]}`;
+    return publicId;
+  } catch (error) {
+    console.error('Error extracting public_id from URL:', error);
+    return null;
+  }
+};
+
 // @desc    Get all books
 // @route   GET /api/books
 // @access  Public
@@ -95,7 +113,21 @@ export const updateBook = async (req: Request, res: Response) => {
 
     let imageUrl = book.imageUrl;
     if (req.file) {
-      // Upload to cloudinary with high quality settings
+      // Delete previous image from Cloudinary if it exists
+      if (book.imageUrl) {
+        const publicId = getPublicIdFromUrl(book.imageUrl);
+        if (publicId) {
+          try {
+            await cloudinary.uploader.destroy(publicId);
+            console.log(`Successfully deleted previous image: ${publicId}`);
+          } catch (deleteError) {
+            console.error(`Error deleting previous image: ${publicId}`, deleteError);
+            // Continue with the update even if deletion fails
+          }
+        }
+      }
+
+      // Upload new image to cloudinary with high quality settings
       const result = await cloudinary.uploader.upload(req.file.path, {
         folder: 'library',
         quality: "auto:best",
@@ -135,6 +167,20 @@ export const deleteBook = async (req: Request, res: Response) => {
 
     if (!book) {
       return res.status(404).json({ message: 'Book not found' });
+    }
+
+    // Delete image from Cloudinary when deleting the book
+    if (book.imageUrl) {
+      const publicId = getPublicIdFromUrl(book.imageUrl);
+      if (publicId) {
+        try {
+          await cloudinary.uploader.destroy(publicId);
+          console.log(`Successfully deleted image for book: ${publicId}`);
+        } catch (deleteError) {
+          console.error(`Error deleting image for book: ${publicId}`, deleteError);
+          // Continue with book deletion even if image deletion fails
+        }
+      }
     }
 
     await book.deleteOne();

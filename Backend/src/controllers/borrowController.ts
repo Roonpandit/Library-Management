@@ -134,7 +134,8 @@ export const returnBook = async (req: Request, res: Response) => {
       lateFee: lateFee,
       totalAmount: totalAmount,
       isLate: isLate,
-      generatedDate: new Date()
+      generatedDate: new Date(),
+      bookISBN: book?.ISBN
     };
     await borrow.save();
 
@@ -152,7 +153,8 @@ export const returnBook = async (req: Request, res: Response) => {
           lateFee: lateFee,
           totalAmount: totalAmount,
           isLate: isLate,
-          generatedDate: new Date()
+          generatedDate: new Date(),
+          bookISBN: book?.ISBN
         };
         await user.save();
       }
@@ -164,7 +166,8 @@ export const returnBook = async (req: Request, res: Response) => {
         amount: regularCharge,
         lateFee: lateFee,
         totalAmount: totalAmount,
-        isLate
+        isLate,
+        bookISBN: book?.ISBN
       }
     });
   } catch (error) {
@@ -199,6 +202,9 @@ try {
 
   // Check if bill already generated
   if (borrow.bill && borrow.bill.generatedDate) {
+    // Get book details to include ISBN
+    const book = await Book.findById(borrow.bookId);
+    
     // Update existing bill
     const totalAmount = borrow.bill.amount + Number(lateFee);
     
@@ -207,7 +213,8 @@ try {
       lateFee: Number(lateFee),
       totalAmount,
       isLate: borrow.bill.isLate || lateFee > 0,
-      generatedDate: new Date()
+      generatedDate: new Date(),
+      bookISBN: book?.ISBN || borrow.bill.bookISBN
     };
   } else {
     return res.status(400).json({ message: 'No bill data found' });
@@ -232,7 +239,8 @@ try {
         lateFee: Number(lateFee),
         totalAmount,
         isLate: user.borrowedBooks[borrowedBookIndex].bill!.isLate || lateFee > 0,
-        generatedDate: new Date()
+        generatedDate: new Date(),
+        bookISBN: borrow.bill.bookISBN
       };
       
       // Add notification

@@ -23,6 +23,13 @@ const BillDetails: React.FC<BillDetailsProps> = ({ bill, isPreview = false, onPr
       </div>
 
       <div className="grid grid-cols-2 gap-3 text-sm">
+        {bill.bookISBN && (
+          <>
+            <p className="text-gray-500">ISBN:</p>
+            <p className="font-medium text-right">{bill.bookISBN}</p>
+          </>
+        )}
+
         <p className="text-gray-500">Base Amount:</p>
         <p className="font-medium text-right">${bill.amount.toFixed(2)}</p>
 

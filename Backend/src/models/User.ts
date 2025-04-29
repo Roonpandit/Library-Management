@@ -13,6 +13,7 @@ export interface BorrowedBook {
     totalAmount: number;
     isLate: boolean;
     generatedDate: Date;
+    bookISBN?: string;
   };
 }
 
@@ -84,7 +85,8 @@ const UserSchema: Schema = new Schema(
           lateFee: Number,
           totalAmount: Number,
           isLate: Boolean,
-          generatedDate: Date
+          generatedDate: Date,
+          bookISBN: String
         }
       }
     ],

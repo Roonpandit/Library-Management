@@ -56,6 +56,7 @@ export interface Bill {
   totalAmount: number
   isLate: boolean
   generatedDate?: string
+  bookISBN?: string
 }
 
 export interface UserDashboardData {

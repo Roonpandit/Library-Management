@@ -112,7 +112,7 @@ const BookDetails = () => {
         </Link>
       </div>
 
-      <div className="overflow-hidden bg-white rounded-lg shadow-sm">
+      <div className="overflow-hidden bg-white rounded-[10px] shadow-sm">
         <div className="md:flex">
           <div className="w-full md:w-1/3 bg-gray-200">
             {book.imageUrl ? (
@@ -180,7 +180,7 @@ const BookDetails = () => {
             </div>
 
             {user && book.copiesAvailable > 0 && !borrowSuccess && (
-              <div className="p-4 mt-6 border border-gray-200 rounded-md">
+              <div className="p-4 mt-6 border border-gray-200 rounded-[10px]">
                 <h2 className="text-lg font-medium text-gray-900">Borrow this Book</h2>
 
                 {borrowError && <div className="p-2 mt-2 text-sm text-red-700 bg-red-100 rounded">{borrowError}</div>}
@@ -195,7 +195,7 @@ const BookDetails = () => {
                     min={minDate}
                     value={borrowDate}
                     onChange={(e) => setBorrowDate(e.target.value)}
-                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="block w-full mt-1 border-gray-300 rounded-[10px] shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   />
                 </div>
 

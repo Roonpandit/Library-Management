@@ -98,10 +98,9 @@ const EditBook = () => {
   }
 
   return (
-    <div className="container mx-auto">
-      <h1 className="mb-6 text-2xl font-bold text-gray-900">Edit Book</h1>
-
-      <div className="p-6 bg-white rounded-lg shadow-sm">
+    <div className="container mx-auto ">
+<h1 className="mb-6 text-2xl font-bold text-gray-900 text-center">Edit Book</h1>
+      <div className="p-6 bg-white rounded-[10px] shadow-sm">
         {error && <div className="p-4 mb-6 text-red-700 bg-red-100 rounded-md">{error}</div>}
 
         <form onSubmit={handleSubmit}>
@@ -116,7 +115,7 @@ const EditBook = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full mt-1 border-gray-300 rounded-[10px] shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
             </div>
 
@@ -130,7 +129,7 @@ const EditBook = () => {
                 value={author}
                 onChange={(e) => setAuthor(e.target.value)}
                 required
-                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full mt-1 border-gray-300 rounded-[10px] shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
             </div>
 
@@ -144,7 +143,7 @@ const EditBook = () => {
                 value={ISBN}
                 onChange={(e) => setISBN(e.target.value)}
                 required
-                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full mt-1 border-gray-300 rounded-[10px] shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
             </div>
 
@@ -158,7 +157,7 @@ const EditBook = () => {
                 value={publishedDate}
                 onChange={(e) => setPublishedDate(e.target.value)}
                 required
-                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full mt-1 border-gray-300 rounded-[10px] shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
             </div>
 
@@ -172,7 +171,7 @@ const EditBook = () => {
                 value={genre}
                 onChange={(e) => setGenre(e.target.value)}
                 required
-                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full mt-1 border-gray-300 rounded-[10px] shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
             </div>
 
@@ -187,7 +186,7 @@ const EditBook = () => {
                 onChange={(e) => setCopiesAvailable(e.target.value)}
                 min="0"
                 required
-                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full mt-1 border-gray-300 rounded-[10px] shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
             </div>
 
@@ -203,7 +202,7 @@ const EditBook = () => {
                 min="0"
                 step="0.01"
                 required
-                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full mt-1 border-gray-300 rounded-[10px] shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
             </div>
 
@@ -216,7 +215,7 @@ const EditBook = () => {
                 id="image"
                 accept="image/*"
                 onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)}
-                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full mt-1 border-gray-300 rounded-[10px] shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
               {book?.imageUrl && (
                 <div className="mt-2">
@@ -243,7 +242,7 @@ const EditBook = () => {
               onChange={(e) => setDescription(e.target.value)}
               rows={4}
               required
-              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full mt-1 border-gray-300 rounded-[10px] shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             ></textarea>
           </div>
 

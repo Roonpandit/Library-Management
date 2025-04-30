@@ -10,7 +10,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
-  const { login, loading, error, clearError, clearRegistrationSuccess } = useAuth()
+  const { login, loading, error, clearError, clearRegistrationSuccess, user } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -19,21 +19,27 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     const params = new URLSearchParams(location.search)
     if (params.get('registered') === 'true') {
       setSuccessMessage('Account created successfully! Please login with your credentials.')
-      clearRegistrationSuccess() // Clear the registration success status
+      clearRegistrationSuccess()
     }
   }, [location, clearRegistrationSuccess])
 
+  // Redirect if user is already logged in
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard')
+    }
+  }, [user, navigate])
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    setSuccessMessage(null) // Clear any success message when attempting login
+    setSuccessMessage(null)
     try {
       await login(email.toLowerCase(), password)
-      // If login was successful, call the onLogin prop if it exists
       if (onLogin) {
         onLogin()
       }
-      // Navigate to the dashboard
-      navigate('/')
+      // Navigate to the dashboard instead of root
+      navigate('/dashboard')
     } catch (err) {
       // Error handling is already done in the Auth context
     }

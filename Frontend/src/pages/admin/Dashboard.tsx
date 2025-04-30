@@ -1,59 +1,69 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import { api } from "../../services/api"
-import type { AdminDashboardData, User, Book, Borrow } from "../../types"
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { api } from "../../services/api";
+import type { AdminDashboardData, User, Book, Borrow } from "../../types";
 
 const Dashboard = () => {
-  const [dashboardData, setDashboardData] = useState<AdminDashboardData | null>(null)
-  const [activeUsers, setActiveUsers] = useState<User[]>([])
-  const [recentBooks, setRecentBooks] = useState<Book[]>([])
-  const [overduePayments, setOverduePayments] = useState<Borrow[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [dashboardData, setDashboardData] = useState<AdminDashboardData | null>(
+    null
+  );
+  const [activeUsers, setActiveUsers] = useState<User[]>([]);
+  const [recentBooks, setRecentBooks] = useState<Book[]>([]);
+  const [overduePayments, setOverduePayments] = useState<Borrow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        setLoading(true)
+        setLoading(true);
 
         // Fetch dashboard stats
-        const { data: stats } = await api.get<AdminDashboardData>("/dashboard/admin")
-        setDashboardData(stats)
+        const { data: stats } = await api.get<AdminDashboardData>(
+          "/dashboard/admin"
+        );
+        setDashboardData(stats);
 
         // Fetch active users
-        const { data: users } = await api.get<User[]>("/dashboard/admin/active-users")
-        setActiveUsers(users.slice(0, 5)) // Show only 5 active users
+        const { data: users } = await api.get<User[]>(
+          "/dashboard/admin/active-users"
+        );
+        setActiveUsers(users.slice(0, 5)); // Show only 5 active users
 
         // Fetch recent books
-        const { data: books } = await api.get<Book[]>("/dashboard/admin/books")
-        setRecentBooks(books.slice(0, 5)) // Show only 5 recent books
+        const { data: books } = await api.get<Book[]>("/dashboard/admin/books");
+        setRecentBooks(books.slice(0, 5)); // Show only 5 recent books
 
         // Fetch overdue payments
-        const { data: borrows } = await api.get<Borrow[]>("/dashboard/admin/overdue-payments")
-        setOverduePayments(borrows.slice(0, 5)) // Show only 5 overdue payments
+        const { data: borrows } = await api.get<Borrow[]>(
+          "/dashboard/admin/overdue-payments"
+        );
+        setOverduePayments(borrows.slice(0, 5)); // Show only 5 overdue payments
       } catch (error) {
-        console.error("Error fetching dashboard data:", error)
-        setError("Failed to fetch dashboard data. Please try again later.")
+        console.error("Error fetching dashboard data:", error);
+        setError("Failed to fetch dashboard data. Please try again later.");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchDashboardData()
-  }, [])
+    fetchDashboardData();
+  }, []);
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="w-12 h-12 border-4 border-blue-600 rounded-full border-t-transparent animate-spin"></div>
       </div>
-    )
+    );
   }
 
   if (error) {
-    return <div className="p-4 text-red-700 bg-red-100 rounded-md">{error}</div>
+    return (
+      <div className="p-4 text-red-700 bg-red-100 rounded-md">{error}</div>
+    );
   }
 
   return (
@@ -62,10 +72,15 @@ const Dashboard = () => {
 
       {/* Stats */}
       <div className="grid grid-cols-1 gap-6 mb-8 sm:grid-cols-2 lg:grid-cols-5">
-        <div className="p-6 bg-white rounded-lg shadow-sm">
+        <div className="p-6 bg-white rounded-[10px] shadow-sm hover:bg-gray-100 hover:shadow-lg hover:scale-105 transition-all duration-300">
           <div className="flex items-center">
             <div className="p-3 text-white bg-blue-600 rounded-full">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -75,16 +90,26 @@ const Dashboard = () => {
               </svg>
             </div>
             <div className="ml-4">
-              <h2 className="text-sm font-medium text-gray-600">Active Users</h2>
-              <p className="text-2xl font-semibold text-gray-900">{dashboardData?.activeUsers || 0}</p>
+              <h2 className="text-sm font-medium text-gray-600">
+                Active Users
+              </h2>
+              <p className="text-2xl font-semibold text-gray-900">
+                {dashboardData?.activeUsers || 0}
+              </p>
             </div>
           </div>
         </div>
 
-        <div className="p-6 bg-white rounded-lg shadow-sm">
+        <div className="p-6 bg-white rounded-[10px] shadow-sm hover:bg-gray-100 hover:shadow-lg hover:scale-105 transition-all duration-300">
+          {" "}
           <div className="flex items-center">
             <div className="p-3 text-white bg-green-600 rounded-full">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -95,15 +120,23 @@ const Dashboard = () => {
             </div>
             <div className="ml-4">
               <h2 className="text-sm font-medium text-gray-600">Total Books</h2>
-              <p className="text-2xl font-semibold text-gray-900">{dashboardData?.totalBooks || 0}</p>
+              <p className="text-2xl font-semibold text-gray-900">
+                {dashboardData?.totalBooks || 0}
+              </p>
             </div>
           </div>
         </div>
 
-        <div className="p-6 bg-white rounded-lg shadow-sm">
+        <div className="p-6 bg-white rounded-[10px] shadow-sm hover:bg-gray-100 hover:shadow-lg hover:scale-105 transition-all duration-300">
+          {" "}
           <div className="flex items-center">
             <div className="p-3 text-white bg-red-600 rounded-full">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -113,16 +146,26 @@ const Dashboard = () => {
               </svg>
             </div>
             <div className="ml-4">
-              <h2 className="text-sm font-medium text-gray-600">Overdue Payments</h2>
-              <p className="text-2xl font-semibold text-gray-900">{dashboardData?.overduePayments || 0}</p>
+              <h2 className="text-sm font-medium text-gray-600">
+                Overdue Payments
+              </h2>
+              <p className="text-2xl font-semibold text-gray-900">
+                {dashboardData?.overduePayments || 0}
+              </p>
             </div>
           </div>
         </div>
 
-        <div className="p-6 bg-white rounded-lg shadow-sm">
+        <div className="p-6 bg-white rounded-[10px] shadow-sm hover:bg-gray-100 hover:shadow-lg hover:scale-105 transition-all duration-300">
+          {" "}
           <div className="flex items-center">
             <div className="p-3 text-white bg-yellow-600 rounded-full">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -131,17 +174,28 @@ const Dashboard = () => {
                 />
               </svg>
             </div>
-            <div className="ml-4">
-              <h2 className="text-sm font-medium text-gray-600">Blocked Users</h2>
-              <p className="text-2xl font-semibold text-gray-900">{dashboardData?.blockedUsers || 0}</p>
+            <div className="ml-4 ">
+              {" "}
+              <h2 className="text-sm font-medium text-gray-600">
+                Blocked Users
+              </h2>
+              <p className="text-2xl font-semibold text-gray-900">
+                {dashboardData?.blockedUsers || 0}
+              </p>
             </div>
           </div>
         </div>
 
-        <div className="p-6 bg-white rounded-lg shadow-sm">
+        <div className="p-6 bg-white rounded-[10px] shadow-sm hover:bg-gray-100 hover:shadow-lg hover:scale-105 transition-all duration-300">
+          {" "}
           <div className="flex items-center">
             <div className="p-3 text-white bg-purple-600 rounded-full">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -151,8 +205,12 @@ const Dashboard = () => {
               </svg>
             </div>
             <div className="ml-4">
-              <h2 className="text-sm font-medium text-gray-600">Returned Books</h2>
-              <p className="text-2xl font-semibold text-gray-900">{dashboardData?.returnedBooks || 0}</p>
+              <h2 className="text-sm font-medium text-gray-600">
+                Returned Books
+              </h2>
+              <p className="text-2xl font-semibold text-gray-900">
+                {dashboardData?.returnedBooks || 0}
+              </p>
             </div>
           </div>
         </div>
@@ -160,10 +218,13 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Active Users */}
-        <div className="bg-white rounded-lg shadow-sm">
+        <div className="bg-white rounded-[10px] shadow-sm border border-blue-200">
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <h2 className="text-lg font-bold text-gray-900">Active Users</h2>
-            <Link to="/admin/active-users" className="text-sm font-medium text-blue-600 hover:text-blue-800">
+            <Link
+              to="/admin/active-users"
+              className="text-sm font-medium text-blue-600 hover:text-blue-800"
+            >
               View all
             </Link>
           </div>
@@ -176,13 +237,18 @@ const Dashboard = () => {
             ) : (
               <div className="divide-y divide-gray-200">
                 {activeUsers.map((user) => (
-                  <div key={user._id} className="flex items-center justify-between py-3">
+                  <div
+                    key={user._id}
+                    className="flex items-center justify-between py-3"
+                  >
                     <div className="flex items-center">
                       <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
                         {user.name.charAt(0).toUpperCase()}
                       </div>
                       <div className="ml-3">
-                        <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {user.name}
+                        </p>
                         <p className="text-xs text-gray-500">{user.email}</p>
                       </div>
                     </div>
@@ -200,10 +266,14 @@ const Dashboard = () => {
         </div>
 
         {/* Recent Books */}
-        <div className="bg-white rounded-lg shadow-sm">
+        <div className="bg-white rounded-[10px] shadow-sm border border-blue-200">
+
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <h2 className="text-lg font-bold text-gray-900">Recent Books</h2>
-            <Link to="/admin/books" className="text-sm font-medium text-blue-600 hover:text-blue-800">
+            <Link
+              to="/admin/books"
+              className="text-sm font-medium text-blue-600 hover:text-blue-800"
+            >
               View all
             </Link>
           </div>
@@ -216,7 +286,10 @@ const Dashboard = () => {
             ) : (
               <div className="divide-y divide-gray-200">
                 {recentBooks.map((book) => (
-                  <div key={book._id} className="flex items-center justify-between py-3">
+                  <div
+                    key={book._id}
+                    className="flex items-center justify-between py-3"
+                  >
                     <div className="flex items-center">
                       <div className="w-10 h-10 bg-gray-200 rounded overflow-hidden">
                         {book.imageUrl ? (
@@ -227,7 +300,12 @@ const Dashboard = () => {
                           />
                         ) : (
                           <div className="flex items-center justify-center w-full h-full text-gray-500">
-                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg
+                              className="w-6 h-6"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
                               <path
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
@@ -239,14 +317,20 @@ const Dashboard = () => {
                         )}
                       </div>
                       <div className="ml-3">
-                        <p className="text-sm font-medium text-gray-900">{book.title}</p>
-                        <p className="text-xs text-gray-500">by {book.author}</p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {book.title}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          by {book.author}
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-center">
                       <span
                         className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                          book.copiesAvailable > 0 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                          book.copiesAvailable > 0
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
                         }`}
                       >
                         {book.copiesAvailable} copies
@@ -266,10 +350,15 @@ const Dashboard = () => {
         </div>
 
         {/* Overdue Payments */}
-        <div className="bg-white rounded-lg shadow-sm lg:col-span-2">
+        <div className="bg-white rounded-[10px] shadow-sm lg:col-span-2 border border-blue-200">
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <h2 className="text-lg font-bold text-gray-900">Overdue Payments</h2>
-            <Link to="/admin/overdue-payments" className="text-sm font-medium text-blue-600 hover:text-blue-800">
+            <h2 className="text-lg font-bold text-gray-900">
+              Overdue Payments
+            </h2>
+            <Link
+              to="/admin/overdue-payments"
+              className="text-sm font-medium text-blue-600 hover:text-blue-800"
+            >
               View all
             </Link>
           </div>
@@ -321,9 +410,15 @@ const Dashboard = () => {
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {overduePayments.map((borrow) => {
-                      const user = typeof borrow.userId === "string" ? null : (borrow.userId as unknown as User)
+                      const user =
+                        typeof borrow.userId === "string"
+                          ? null
+                          : (borrow.userId as unknown as User);
 
-                      const book = typeof borrow.bookId === "string" ? null : (borrow.bookId as unknown as Book)
+                      const book =
+                        typeof borrow.bookId === "string"
+                          ? null
+                          : (borrow.bookId as unknown as Book);
 
                       return (
                         <tr key={borrow._id}>
@@ -334,21 +429,31 @@ const Dashboard = () => {
                                   {user.name.charAt(0).toUpperCase()}
                                 </div>
                                 <div className="ml-3">
-                                  <p className="text-sm font-medium text-gray-900">{user.name}</p>
-                                  <p className="text-xs text-gray-500">{user.email}</p>
+                                  <p className="text-sm font-medium text-gray-900">
+                                    {user.name}
+                                  </p>
+                                  <p className="text-xs text-gray-500">
+                                    {user.email}
+                                  </p>
                                 </div>
                               </div>
                             ) : (
-                              <span className="text-gray-500">User not available</span>
+                              <span className="text-gray-500">
+                                User not available
+                              </span>
                             )}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             {book ? (
                               <div className="flex items-center">
-                                <p className="text-sm font-medium text-gray-900">{book.title}</p>
+                                <p className="text-sm font-medium text-gray-900">
+                                  {book.title}
+                                </p>
                               </div>
                             ) : (
-                              <span className="text-gray-500">Book not available</span>
+                              <span className="text-gray-500">
+                                Book not available
+                              </span>
                             )}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
@@ -358,7 +463,9 @@ const Dashboard = () => {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className="text-sm text-red-600 font-medium">
-                              {new Date(borrow.borrowedTill).toLocaleDateString()}
+                              {new Date(
+                                borrow.borrowedTill
+                              ).toLocaleDateString()}
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
@@ -367,12 +474,15 @@ const Dashboard = () => {
                             </span>
                           </td>
                           <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                            <Link to={`/admin/borrows`} className="text-blue-600 hover:text-blue-900">
+                            <Link
+                              to={`/admin/borrows`}
+                              className="text-blue-600 hover:text-blue-900"
+                            >
                               View
                             </Link>
                           </td>
                         </tr>
-                      )
+                      );
                     })}
                   </tbody>
                 </table>
@@ -382,7 +492,7 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

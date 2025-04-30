@@ -4,6 +4,7 @@ import axios from "axios"
 import type { User, AuthResponse, ApiError } from "../types"
 import { api } from "../services/api"
 
+
 interface AuthContextType {
   user: User | null
   loading: boolean
@@ -47,7 +48,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         } catch (error) {
           localStorage.removeItem("token")
           delete api.defaults.headers.common["Authorization"]
+          setUser(null)
         }
+      } else {
+        setUser(null)
       }
       setLoading(false)
     }

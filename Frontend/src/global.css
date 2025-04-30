@@ -14,24 +14,24 @@ body {
 
 /* Button Variants */
 .btn-primary {
-  @apply text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-500;
+  @apply text-white bg-blue-600 rounded-[10px] hover:bg-blue-700 focus:ring-blue-500;
 }
 
 .btn-secondary {
-  @apply text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:ring-blue-500;
+  @apply text-gray-700 bg-white border border-gray-300 rounded-[10px] hover:bg-gray-50 focus:ring-blue-500;
 }
 
 .btn-danger {
-  @apply text-white bg-red-600 hover:bg-red-700 focus:ring-red-500;
+  @apply text-white bg-red-600 rounded-[10px] hover:bg-red-700 focus:ring-red-500;
 }
 
 .btn-success {
-  @apply text-white bg-green-600 hover:bg-green-700 focus:ring-green-500;
+  @apply text-white bg-green-600 rounded-[10px] hover:bg-green-700 focus:ring-green-500;
 }
 
 /* Form Elements */
 .form-input {
-  @apply block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500;
+  @apply block w-full px-3 py-2 rounded-[10px] border border-gray-300 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500;
 }
 
 .form-label {

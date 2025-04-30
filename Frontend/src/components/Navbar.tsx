@@ -1,6 +1,6 @@
 import type React from "react"
 
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
 import { useState, useRef, useEffect } from "react"
 import { api } from "../services/api"
@@ -20,14 +20,16 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onLogout }) => {
   const [unreadCount, setUnreadCount] = useState(0)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const notificationsRef = useRef<HTMLDivElement>(null)
+  const navigate = useNavigate();
 
   // Use the provided onLogout function or fall back to the auth context logout
   const handleLogout = () => {
     if (onLogout) {
       onLogout();
     }
+    // First clear the auth state
     authLogout();
-  };
+    };
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -206,6 +208,7 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onLogout }) => {
                         onClick={() => {
                           setDropdownOpen(false)
                           handleLogout()
+                          navigate("/")
                         }}
                         className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
                       >

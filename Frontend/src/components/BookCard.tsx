@@ -8,8 +8,7 @@ interface BookCardProps {
 
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
   return (
-    <div className="overflow-hidden bg-white rounded-lg shadow-sm">
-      {/* Removed fixed height container, letting image determine its own height */}
+<div className="overflow-hidden bg-white shadow-sm rounded-[10px]">      {/* Removed fixed height container, letting image determine its own height */}
       <div className="bg-gray-200">
         {book.imageUrl ? (
           <img 
@@ -31,6 +30,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
         )}
       </div>
       <div className="p-4">
+        
         <h3 className="text-lg font-semibold text-gray-900 truncate">{book.title}</h3>
         <p className="text-sm text-gray-600">by {book.author}</p>
         <div className="flex items-center justify-between mt-2">

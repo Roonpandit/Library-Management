@@ -1,4 +1,4 @@
- <img src="../Frontend/public/book-favicon.svg" alt="BookNest" width="50" style="vertical-align: middle;"/> BookNest - Library Management System
+ # <img src="Frontend/public/book-favicon.svg" alt="BookNest" width="50" style="vertical-align: middle;"/> BookNest - Library Management System
 
 
 
@@ -7,7 +7,7 @@
 1. [Live Demo](#live-demo)
 2. [Introduction](#introduction)
 3. [Features](#features)
-4. [User Guide](#user-guide)image in readme.md
+4. [User Guide](#user-guide)
 
    - [Registration & Login](#registration--login)
    - [Browsing Books](#browsing-books)

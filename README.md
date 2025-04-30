@@ -1,4 +1,4 @@
-# <img src="../Library-Management/Frontend/public/book-favicon.svg" alt="BookNest" width="50" style="vertical-align: middle;"/> BookNest - Library Management System
+ <img src="../Library-Management/Frontend/public/book-favicon.svg" alt="BookNest" width="50" style="vertical-align: middle;"/> BookNest - Library Management System
 
 
 

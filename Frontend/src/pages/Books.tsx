@@ -46,7 +46,7 @@ const Books = () => {
     <div className="container mx-auto">
       <h1 className="mb-6 text-2xl font-bold text-gray-900">Browse Books</h1>
 
-      <div className="p-4 mb-6 bg-white rounded-lg shadow-sm">
+      <div className="p-4 mb-6 bg-white rounded-[10px] border border-blue-200 shadow-sm">
         <div className="flex flex-col gap-4 md:flex-row">
           <div className="flex-1">
             <label htmlFor="search" className="block text-sm font-medium text-gray-700">
@@ -55,7 +55,7 @@ const Books = () => {
             <input
               type="text"
               id="search"
-              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full mt-1 border-gray-300 rounded-[10px] shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               placeholder="Search by title or author"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -67,7 +67,7 @@ const Books = () => {
             </label>
             <select
               id="genre"
-              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full mt-1 border-gray-300 rounded-[10px] shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               value={genre}
               onChange={(e) => setGenre(e.target.value)}
             >

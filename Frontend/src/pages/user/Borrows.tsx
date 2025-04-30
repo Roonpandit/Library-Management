@@ -55,7 +55,7 @@ const Borrows = () => {
         <div className="flex space-x-4">
           <button
             onClick={() => setFilter("all")}
-            className={`px-4 py-2 text-sm font-medium rounded-md ${
+            className={`px-4 py-2 text-sm font-medium rounded-[10px] ${
               filter === "all" ? "bg-blue-100 text-blue-800" : "text-gray-700 hover:bg-gray-100"
             }`}
           >
@@ -63,7 +63,7 @@ const Borrows = () => {
           </button>
           <button
             onClick={() => setFilter("current")}
-            className={`px-4 py-2 text-sm font-medium rounded-md ${
+            className={`px-4 py-2 text-sm font-medium rounded-[10px] ${
               filter === "current" ? "bg-blue-100 text-blue-800" : "text-gray-700 hover:bg-gray-100"
             }`}
           >
@@ -71,7 +71,7 @@ const Borrows = () => {
           </button>
           <button
             onClick={() => setFilter("returned")}
-            className={`px-4 py-2 text-sm font-medium rounded-md ${
+            className={`px-4 py-2 text-sm font-medium rounded-[10px] ${
               filter === "returned" ? "bg-blue-100 text-blue-800" : "text-gray-700 hover:bg-gray-100"
             }`}
           >

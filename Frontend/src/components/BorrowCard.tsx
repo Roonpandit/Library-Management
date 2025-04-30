@@ -105,7 +105,7 @@ const BorrowCard: React.FC<BorrowCardProps> = ({
   };
 
   return (
-    <div className="overflow-hidden bg-white rounded-lg shadow-sm">
+    <div className="overflow-hidden bg-white rounded-[10px] border border-blue-200 shadow-sm">
       <div className="p-4">
         {book ? (
           <div className="flex items-center gap-4">

@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import type { Bill, Borrow, Book, User } from "../types";
 import BillDetails from "./BillDetails";
 import { Link } from "react-router-dom";
-import html2pdf from 'html2pdf.js';
+import html2pdf from "html2pdf.js";
 
 interface BillModalProps {
   isOpen: boolean;
@@ -82,10 +82,16 @@ const BillModal: React.FC<BillModalProps> = ({
     // Configuration for PDF export
     const options = {
       margin: [10, 10, 10, 10],
-      filename: `BookNest_Receipt_${new Date().toISOString().split('T')[0]}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
+      filename: `BookNest_Receipt_${
+        new Date().toISOString().split("T")[0]
+      }.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: "portrait" as "portrait" }
+      jsPDF: {
+        unit: "mm",
+        format: "a4",
+        orientation: "portrait" as "portrait",
+      },
     };
 
     // Generate PDF
@@ -105,8 +111,8 @@ const BillModal: React.FC<BillModalProps> = ({
         ></div>
 
         {/* Modal panel */}
-        <div className="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-          <div className="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
+        <div className="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-[10px] shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+          <div className="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4 ">
             <div className="sm:flex sm:items-start">
               <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                 <h3 className="text-lg font-medium leading-6 text-gray-900 mb-4">
@@ -205,25 +211,53 @@ const BillModal: React.FC<BillModalProps> = ({
             </div>
           </div>
 
-          <div className="px-4 py-3 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse">
+          <div className="flex flex-col-reverse gap-3 p-5 bg-gray-50 rounded-b-lg border-t border-gray-200 sm:flex-row-reverse sm:justify-center sm:py-4 sm:px-6">
             <button
               type="button"
               onClick={handleSavePDF}
-              className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-green-600 border border-transparent rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
+              className="inline-flex items-center justify-center w-full px-2 py-1 text-sm font-medium text-white bg-green-600 border border-transparent rounded-[10px] shadow-sm transition-all duration-200 hover:bg-green-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:w-auto"
             >
+              <svg
+                className="w-4 h-4 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                />
+              </svg>
               Save as PDF
             </button>
             <button
               type="button"
               onClick={handlePrint}
-              className="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+              className="inline-flex items-center justify-center w-full px-2 py-1 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-[10px] shadow-sm transition-all duration-200 hover:bg-blue-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:w-auto"
             >
+              <svg
+                className="w-4 h-4 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+                />
+              </svg>
               Print Receipt
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+              className="inline-flex items-center justify-center w-full px-2 py-15 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-[10px] shadow-sm transition-all duration-200 hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 sm:w-auto"
             >
               Close
             </button>

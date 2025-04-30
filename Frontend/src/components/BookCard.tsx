@@ -1,24 +1,31 @@
-import type React from "react"
-import { Link } from "react-router-dom"
-import type { Book } from "../types"
+import type React from "react";
+import { Link } from "react-router-dom";
+import type { Book } from "../types";
 
 interface BookCardProps {
-  book: Book
+  book: Book;
 }
 
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
   return (
-<div className="overflow-hidden bg-white shadow-sm rounded-[10px]">      {/* Removed fixed height container, letting image determine its own height */}
+    <div className="overflow-hidden bg-white shadow-sm rounded-[10px] border border-blue-200">
+      {" "}
+      {/* Removed fixed height container, letting image determine its own height */}
       <div className="bg-gray-200">
         {book.imageUrl ? (
-          <img 
-            src={book.imageUrl || "/placeholder.svg"} 
-            alt={book.title} 
-            className="w-full h-96" 
+          <img
+            src={book.imageUrl || "/placeholder.svg"}
+            alt={book.title}
+            className="w-full h-96"
           />
         ) : (
           <div className="flex items-center justify-center w-full py-12 text-gray-500">
-            <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg
+              className="w-12 h-12"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -30,26 +37,38 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
         )}
       </div>
       <div className="p-4">
-        
-        <h3 className="text-lg font-semibold text-gray-900 truncate">{book.title}</h3>
+        <h3 className="text-lg font-semibold text-gray-900 truncate">
+          {book.title}
+        </h3>
         <p className="text-sm text-gray-600">by {book.author}</p>
         <div className="flex items-center justify-between mt-2">
           <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
             {book.genre}
           </span>
-          <span className="text-sm font-medium text-gray-900">${book.chargePerDay}/day</span>
+          <span className="text-sm font-medium text-gray-900">
+            ${book.chargePerDay}/day
+          </span>
         </div>
         <div className="flex items-center justify-between mt-4">
-          <span className={`text-sm font-medium ${book.copiesAvailable > 0 ? "text-green-600" : "text-red-600"}`}>
-            {book.copiesAvailable > 0 ? `${book.copiesAvailable} available` : "Not available"}
+          <span
+            className={`text-sm font-medium ${
+              book.copiesAvailable > 0 ? "text-green-600" : "text-red-600"
+            }`}
+          >
+            {book.copiesAvailable > 0
+              ? `${book.copiesAvailable} available`
+              : "Not available"}
           </span>
-          <Link to={`/books/${book._id}`} className="text-sm font-medium text-blue-600 hover:text-blue-800">
+          <Link
+            to={`/books/${book._id}`}
+            className="text-sm font-medium text-blue-600 hover:text-blue-800"
+          >
             View details
           </Link>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default BookCard
+export default BookCard;

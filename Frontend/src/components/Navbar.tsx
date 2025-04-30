@@ -106,7 +106,7 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onLogout }) => {
                     d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                   />
                 </svg>
-                <span className="ml-2 text-xl font-bold text-gray-900" style={{ fontFamily: 'Times New Roman, Times, serif' }}>
+                <span className="ml-2 text-2xl font-bold text-gray-900" style={{ fontFamily: 'Times New Roman, Times, serif' }}>
   BookNest
 </span>
 
@@ -140,12 +140,12 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onLogout }) => {
                 </button>
 
                 {notificationsOpen && (
-                  <div className="absolute right-0 z-10 w-80 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
-                    <div className="py-1">
+                  <div className="absolute right-0 z-10 w-80 mt-2 origin-top-right bg-white rounded-[10px] shadow-lg ring-1 ring-black ring-opacity-5">
+                    <div className="py-2 px-2 ">
                       <div className="px-4 py-2 text-sm font-medium text-gray-700 border-b border-gray-200">
                         Notifications
                       </div>
-                      <div className="max-h-60 overflow-y-auto">
+                      <div className="max-h-60 overflow-y-auto rounded-[10px]">
                         {notifications.length > 0 ? (
                           notifications.map((notification) => (
                             <div
@@ -185,13 +185,13 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onLogout }) => {
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                 >
                   <span className="sr-only">Open user menu</span>
-                  <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-900 via-blue-700 to-blue-200 flex items-center justify-center text-white font-medium">
                     {user.name.charAt(0).toUpperCase()}
                   </div>
                 </button>
 
                 {dropdownOpen && (
-                  <div className="absolute right-0 z-10 w-48 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+                  <div className="absolute right-0 z-10 w-48 mt-2 origin-top-right bg-white rounded-[10px] shadow-lg ring-1 ring-black ring-opacity-5">
                     <div className="py-1">
                       <div className="px-4 py-2 text-sm text-gray-700 border-b border-gray-200">
                         <p className="font-medium">{user.name}</p>

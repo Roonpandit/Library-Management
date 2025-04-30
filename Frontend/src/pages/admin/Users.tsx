@@ -189,7 +189,7 @@ const Users = () => {
                   <tr key={user._id}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-900 via-blue-700 to-blue-200 flex items-center justify-center text-white font-medium">
                           {user.name.charAt(0).toUpperCase()}
                         </div>
                         <div className="ml-3">

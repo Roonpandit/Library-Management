@@ -40,7 +40,7 @@ const BlockedUsers = () => {
   }
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto rounded-[10px] border border-blue-200 p-6 bg-white shadow-sm">
       <h1 className="mb-6 text-2xl font-bold text-gray-900">Blocked Users</h1>
 
       {error && <div className="p-4 mb-6 text-red-700 bg-red-100 rounded-md">{error}</div>}
@@ -102,7 +102,7 @@ const BlockedUsers = () => {
                   <tr key={user._id}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-900 via-blue-700 to-blue-200 flex items-center justify-center text-white font-medium">
                           {user.name.charAt(0).toUpperCase()}
                         </div>
                         <div className="ml-3">

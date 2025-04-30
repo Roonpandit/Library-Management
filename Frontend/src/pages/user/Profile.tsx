@@ -75,7 +75,7 @@ const Profile = () => {
     <div className="container mx-auto">
       <h1 className="mb-6 text-2xl font-bold text-gray-900">My Profile</h1>
 
-      <div className="p-6 bg-white rounded-lg shadow-sm">
+      <div className="p-6 bg-white rounded-[10px] shadow-sm">
         <h2 className="text-xl font-bold text-gray-900">Profile Information</h2>
 
         {updateSuccess && (
@@ -94,7 +94,7 @@ const Profile = () => {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full mt-1 border-gray-300 rounded-[10px] shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
 
@@ -107,7 +107,7 @@ const Profile = () => {
               id="email"
               value={user.email}
               disabled
-              className="block w-full mt-1 text-gray-500 bg-gray-100 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full mt-1 text-gray-500 bg-gray-100 border-gray-300 rounded-[10px] shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
             <p className="mt-1 text-xs text-gray-500">Email cannot be changed</p>
           </div>
@@ -121,7 +121,7 @@ const Profile = () => {
               id="role"
               value={user.role}
               disabled
-              className="block w-full mt-1 text-gray-500 bg-gray-100 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full mt-1 text-gray-500 bg-gray-100 border-gray-300 rounded-[10px] shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
 

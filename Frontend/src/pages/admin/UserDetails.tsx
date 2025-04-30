@@ -125,9 +125,9 @@ const UserDetails = () => {
       <div className="grid gap-6 md:grid-cols-3">
         {/* User Information */}
         <div className="md:col-span-1">
-          <div className="p-6 bg-white rounded-lg shadow-sm">
+          <div className="p-6 bg-white shadow-sm rounded-[10px] border border-blue-200">
             <div className="flex items-center mb-4">
-              <div className="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center text-white text-2xl font-medium">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-900 via-blue-700 to-blue-200 flex items-center justify-center text-white text-2xl font-medium">
                 {user.name.charAt(0).toUpperCase()}
               </div>
               <div className="ml-4">
@@ -161,7 +161,7 @@ const UserDetails = () => {
           </div>
 
           {/* Send Reminder */}
-          <div className="p-6 mt-6 bg-white rounded-lg shadow-sm">
+          <div className="p-6 mt-6 bg-white rounded-[10px] border border-blue-200 shadow-sm">
             <h3 className="text-lg font-bold text-gray-900">Send Reminder</h3>
 
             {error && <div className="p-3 mt-4 text-sm text-red-700 bg-red-100 rounded-md">{error}</div>}
@@ -179,7 +179,7 @@ const UserDetails = () => {
                 value={reminderMessage}
                 onChange={(e) => setReminderMessage(e.target.value)}
                 rows={3}
-                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full mt-1 border-gray-300 rounded-[10px] shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="Enter reminder message..."
               ></textarea>
             </div>
@@ -194,7 +194,7 @@ const UserDetails = () => {
 
         {/* Borrowed Books */}
         <div className="md:col-span-2">
-          <div className="p-6 bg-white rounded-lg shadow-sm">
+          <div className="p-6 bg-white rounded-[10px] border border-blue-200 shadow-sm">
             <h3 className="text-lg font-bold text-gray-900">Borrowed Books</h3>
 
             <div className="mt-4">
@@ -203,7 +203,7 @@ const UserDetails = () => {
                   <p>This user hasn't borrowed any books yet.</p>
                 </div>
               ) : (
-                <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
+                <div className="space-y-4 max-h-96 overflow-y-auto pr-2 border-t border-b">
                   {borrows.map((borrow) => (
                     <BorrowCard key={borrow._id} borrow={borrow} />
                   ))}
@@ -213,21 +213,21 @@ const UserDetails = () => {
           </div>
 
           {/* Notifications */}
-          <div className="p-6 mt-6 bg-white rounded-lg shadow-sm">
+          <div className="p-6 mt-6 bg-white rounded-[10px] border border-blue-200 shadow-sm">
             <h3 className="text-lg font-bold text-gray-900">Notifications</h3>
 
             <div className="mt-4">
               {user.notifications && user.notifications.length > 0 ? (
-                <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
+                <div className="space-y-4 max-h-96 overflow-y-auto pr-2 ">
                   {user.notifications.map((notification) => (
                     <div
                       key={notification._id}
-                      className={`p-4 border rounded-md ${notification.read ? "bg-white" : "bg-blue-50"}`}
+                      className={`p-4 border rounded-[10px] ${notification.read ? "bg-white" : "bg-blue-50"}`}
                     >
                       <div className="flex justify-between">
                         <p className="font-medium text-gray-900">{notification.message}</p>
                         <span
-                          className={`text-xs ${notification.read ? "text-gray-500" : "text-blue-600 font-medium"}`}
+                          className={`text-xs ${notification.read ? "text-gray-500" : "text-blue-600 font-medium "}`}
                         >
                           {notification.read ? "Read" : "Unread"}
                         </span>

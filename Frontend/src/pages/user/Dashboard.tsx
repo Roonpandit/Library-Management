@@ -76,10 +76,10 @@ const Dashboard = () => {
 
       {/* Stats */}
       <div className="grid grid-cols-1 gap-6 mb-8 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="p-6 bg-white rounded-lg shadow-sm">
-          <div className="flex items-center">
-            <div className="p-3 text-white bg-blue-600 rounded-full">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div className="p-6 bg-white rounded-[10px] shadow-sm hover:bg-gray-100 hover:shadow-lg hover:scale-105 transition-all duration-300">
+      <div className="flex items-center">
+            <div className="p-3 text-blue-900 rounded-full">
+              <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -95,10 +95,10 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="p-6 bg-white rounded-lg shadow-sm">
+        <div className="p-6 bg-white rounded-[10px] shadow-sm hover:bg-gray-100 hover:shadow-lg hover:scale-105 transition-all duration-300">
           <div className="flex items-center">
-            <div className="p-3 text-white bg-green-600 rounded-full">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="p-3 text-green-600 rounded-full">
+              <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -114,10 +114,10 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="p-6 bg-white rounded-lg shadow-sm">
+        <div className="p-6 bg-white rounded-[10px] shadow-sm hover:bg-gray-100 hover:shadow-lg hover:scale-105 transition-all duration-300">
           <div className="flex items-center">
-            <div className="p-3 text-white bg-red-600 rounded-full">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="p-3 text-yellow-600 rounded-full">
+              <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -133,10 +133,10 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="p-6 bg-white rounded-lg shadow-sm">
+        <div className="p-6 bg-white rounded-[10px] shadow-sm hover:bg-gray-100 hover:shadow-lg hover:scale-105 transition-all duration-300">
           <div className="flex items-center">
-            <div className="p-3 text-white bg-purple-600 rounded-full">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="p-3 text-purple-600 rounded-full">
+              <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"

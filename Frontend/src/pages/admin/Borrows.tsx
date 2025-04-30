@@ -60,11 +60,11 @@ const Borrows = () => {
     <div className="container mx-auto">
       <h1 className="mb-6 text-2xl font-bold text-gray-900">Manage Borrows</h1>
 
-      <div className="p-4 mb-6 bg-white rounded-lg shadow-sm">
+      <div className="p-4 mb-6 bg-white rounded-[10px] shadow-sm">
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setFilter("all")}
-            className={`px-4 py-2 text-sm font-medium rounded-md ${
+            className={`px-4 py-2 text-sm font-medium rounded-[10px] ${
               filter === "all" ? "bg-blue-100 text-blue-800" : "text-gray-700 hover:bg-gray-100"
             }`}
           >
@@ -72,7 +72,7 @@ const Borrows = () => {
           </button>
           <button
             onClick={() => setFilter("current")}
-            className={`px-4 py-2 text-sm font-medium rounded-md ${
+            className={`px-4 py-2 text-sm font-medium rounded-[10px] ${
               filter === "current" ? "bg-blue-100 text-blue-800" : "text-gray-700 hover:bg-gray-100"
             }`}
           >
@@ -80,7 +80,7 @@ const Borrows = () => {
           </button>
           <button
             onClick={() => setFilter("returned")}
-            className={`px-4 py-2 text-sm font-medium rounded-md ${
+            className={`px-4 py-2 text-sm font-medium rounded-[10px] ${
               filter === "returned" ? "bg-blue-100 text-blue-800" : "text-gray-700 hover:bg-gray-100"
             }`}
           >
@@ -88,7 +88,7 @@ const Borrows = () => {
           </button>
           <button
             onClick={() => setFilter("overdue")}
-            className={`px-4 py-2 text-sm font-medium rounded-md ${
+            className={`px-4 py-2 text-sm font-medium rounded-[10px] ${
               filter === "overdue" ? "bg-blue-100 text-blue-800" : "text-gray-700 hover:bg-gray-100"
             }`}
           >
@@ -96,7 +96,7 @@ const Borrows = () => {
           </button>
           <button
             onClick={() => setFilter("pending")}
-            className={`px-4 py-2 text-sm font-medium rounded-md ${
+            className={`px-4 py-2 text-sm font-medium rounded-[10px] ${
               filter === "pending" ? "bg-blue-100 text-blue-800" : "text-gray-700 hover:bg-gray-100"
             }`}
           >

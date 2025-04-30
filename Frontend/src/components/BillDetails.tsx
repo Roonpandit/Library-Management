@@ -9,7 +9,7 @@ interface BillDetailsProps {
 
 const BillDetails: React.FC<BillDetailsProps> = ({ bill, isPreview = false, onPrint }) => {
   return (
-    <div className={`p-4 rounded-md ${isPreview ? 'bg-gray-50' : 'border border-gray-200'}`}>
+    <div className={`p-4 rounded-[10px] ${isPreview ? 'bg-gray-50' : 'border border-blue-200'}`}>
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-medium text-gray-900">Bill Details</h3>
         {onPrint && (

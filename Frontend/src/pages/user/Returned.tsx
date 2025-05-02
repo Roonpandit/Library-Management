@@ -1,31 +1,29 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import { api } from "../../services/api"
-import type { Borrow } from "../../types"
-import BorrowCard from "../../components/BorrowCard"
+import { useState, useEffect } from "react";
+import { api } from "../../services/api";
+import type { Borrow } from "../../types";
+import BorrowCard from "../../components/BorrowCard";
 
 const Returned = () => {
-  const [borrows, setBorrows] = useState<Borrow[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [borrows, setBorrows] = useState<Borrow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchReturnedBooks = async () => {
       try {
-        setLoading(true)
-        const { data } = await api.get<Borrow[]>("/dashboard/user/returned")
-        setBorrows(data)
+        setLoading(true);
+        const { data } = await api.get<Borrow[]>("/dashboard/user/returned");
+        setBorrows(data);
       } catch (error) {
-        console.error("Error fetching returned books:", error)
-        setError("Failed to fetch returned books. Please try again later.")
+        console.error("Error fetching returned books:", error);
+        setError("Failed to fetch returned books. Please try again later.");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchReturnedBooks()
-  }, [])
+    fetchReturnedBooks();
+  }, []);
 
   return (
     <div className="container mx-auto">
@@ -39,7 +37,12 @@ const Returned = () => {
         <div className="p-4 text-red-700 bg-red-100 rounded-md">{error}</div>
       ) : borrows.length === 0 ? (
         <div className="p-8 text-center text-gray-500 bg-white rounded-lg shadow-sm">
-          <svg className="w-12 h-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg
+            className="w-12 h-12 mx-auto text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -58,7 +61,7 @@ const Returned = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Returned
+export default Returned;

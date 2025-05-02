@@ -16,7 +16,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Mock data
 const testimonials = [
   {
     id: 1,
@@ -222,9 +221,9 @@ export default function Landing() {
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               <div className="flex-shrink-0 flex items-center">
-                <BookOpen className="h-8 w-8 text-blue-600" />
+                <BookOpen className="h-8 w-8 text-blue-800" />
                 <span
-                  className="ml-2 text-3xl font-bold text-blue-600"
+                  className="ml-2 text-3xl font-bold text-blue-800"
                   style={{ fontFamily: "Times New Roman, serif" }}
                 >
                   BookNest
@@ -288,51 +287,51 @@ export default function Landing() {
         </div>
 
         {isMenuOpen && (
-  <div
-    className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm"
-    onClick={() => setIsMenuOpen(false)}
-  >
-    <div
-      className="fixed right-0 top-0 h-full bg-white shadow-2xl p-6 space-y-8 transform transition-transform duration-300 ease-in-out animate-slide-in"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div className="space-y-3 text-lg">
-        {[
-          { href: '#features', label: 'Features' },
-          { href: '#how-it-works', label: 'How It Works' },
-          { href: '#testimonials', label: 'Testimonials' },
-          { href: '#faq', label: 'FAQ' },
-        ].map((item) => (
-          <a
-            key={item.href}
-            href={item.href}
-            className="block py-2 px-2 rounded-lg transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600 text-gray-800 font-semibold"
+          <div
+            className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm"
             onClick={() => setIsMenuOpen(false)}
           >
-            {item.label}
-          </a>
-        ))}
-      </div>
+            <div
+              className="fixed right-0 top-0 h-full bg-white shadow-2xl p-6 space-y-8 transform transition-transform duration-300 ease-in-out animate-slide-in"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="space-y-3 text-lg">
+                {[
+                  { href: "#features", label: "Features" },
+                  { href: "#how-it-works", label: "How It Works" },
+                  { href: "#testimonials", label: "Testimonials" },
+                  { href: "#faq", label: "FAQ" },
+                ].map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="block py-2 px-2 rounded-lg transition-colors duration-200 hover:bg-blue-50 hover:text-blue-600 text-gray-800 font-semibold"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
 
-      <div className="border-t border-gray-300 pt-5 space-y-4">
-        <a
-          href="https://library-management-six-livid.vercel.app/login"
-          className="block w-full text-center py-2 rounded-lg text-blue-600 font-semibold hover:bg-blue-50 transition"
-          onClick={() => setIsMenuOpen(false)}
-        >
-          Log in
-        </a>
-        <a
-          href="https://library-management-six-livid.vercel.app/register"
-          className="block w-full text-center py-2 rounded-[10px] bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
-          onClick={() => setIsMenuOpen(false)}
-        >
-          Register
-        </a>
-      </div>
-    </div>
-  </div>
-)}
+              <div className="border-t border-gray-300 pt-5 space-y-4">
+                <a
+                  href="https://library-management-six-livid.vercel.app/login"
+                  className="block w-full text-center py-2 rounded-lg text-blue-600 font-semibold hover:bg-blue-50 transition"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Log in
+                </a>
+                <a
+                  href="https://library-management-six-livid.vercel.app/register"
+                  className="block w-full text-center py-2 rounded-[10px] bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Register
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
       </nav>
 
       <div className="relative bg-white overflow-hidden" ref={heroRef}>
@@ -400,7 +399,6 @@ export default function Landing() {
         </div>
       </div>
 
-      {/* Features Section */}
       <div id="features" className="py-12 bg-white">
         <div
           className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
@@ -444,19 +442,18 @@ export default function Landing() {
         </div>
       </div>
 
-      {/* Stats Section */}
       <div className=" py-12" ref={statsRef}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div className="bg-blue-800 rounded-[10px] p-6">
+            <div className="bg-blue-700 rounded-[10px] p-6">
               <div className="text-4xl font-bold text-white">10,000+</div>
               <div className="mt-2 text-lg text-blue-100">Books Available</div>
             </div>
-            <div className="bg-blue-800 rounded-[10px] p-6">
+            <div className="bg-blue-700 rounded-[10px] p-6">
               <div className="text-4xl font-bold text-white">5,000+</div>
               <div className="mt-2 text-lg text-blue-100">Active Users</div>
             </div>
-            <div className="bg-blue-800 rounded-[10px] p-6">
+            <div className="bg-blue-700 rounded-[10px] p-6">
               <div className="text-4xl font-bold text-white">99.9%</div>
               <div className="mt-2 text-lg text-blue-100">Uptime</div>
             </div>
@@ -464,7 +461,6 @@ export default function Landing() {
         </div>
       </div>
 
-      {/* How It Works */}
       <div id="how-it-works" className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -481,12 +477,9 @@ export default function Landing() {
           </div>
 
           <div className="relative">
-            {/* Timeline */}
             <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-blue-200"></div>
 
-            {/* Steps */}
             <div className="space-y-12 md:space-y-0">
-              {/* Step 1 */}
               <div className="md:grid md:grid-cols-2 md:gap-8 md:items-center mb-12">
                 <div className="md:text-right md:pr-8">
                   <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-blue-600 text-white mb-4">
@@ -511,7 +504,6 @@ export default function Landing() {
                 </div>
               </div>
 
-              {/* Step 2 */}
               <div className="md:grid md:grid-cols-2 md:gap-8 md:items-center mb-12">
                 <div className="md:order-last md:text-left md:pl-8">
                   <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-blue-600 text-white mb-4">
@@ -536,7 +528,6 @@ export default function Landing() {
                 </div>
               </div>
 
-              {/* Step 3 */}
               <div className="md:grid md:grid-cols-2 md:gap-8 md:items-center mb-12">
                 <div className="md:text-right md:pr-8">
                   <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-blue-600 text-white mb-4">
@@ -562,7 +553,6 @@ export default function Landing() {
                 </div>
               </div>
 
-              {/* Step 4 */}
               <div className="md:grid md:grid-cols-2 md:gap-8 md:items-center">
                 <div className="md:order-last md:text-left md:pl-8">
                   <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-blue-600 text-white mb-4">
@@ -591,7 +581,6 @@ export default function Landing() {
         </div>
       </div>
 
-      {/* Testimonials */}
       <div id="testimonials" className="py-16 bg-white" ref={testimonialsRef}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -629,7 +618,6 @@ export default function Landing() {
         </div>
       </div>
 
-      {/* Admin Features */}
       <div className="py-16 bg-gray-800 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -732,7 +720,6 @@ export default function Landing() {
         </div>
       </div>
 
-      {/* FAQ Section */}
       <div id="faq" className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -800,7 +787,6 @@ export default function Landing() {
         </div>
       </div>
 
-      {/* Features Comparison */}
       <div className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -853,7 +839,7 @@ export default function Landing() {
               </div>
             </div>
 
-            <div className="flex flex-col bg-blue-600 rounded-2xl shadow-xl text-white transition-transform transform hover:scale-105 duration-300">
+            <div className="flex flex-col bg-blue-500 rounded-2xl shadow-xl text-white transition-transform transform hover:scale-105 duration-300">
               <div className="px-6 py-8">
                 <h3 className="text-xl font-medium text-center">BookNest</h3>
                 <div className="mt-6 space-y-4">
@@ -925,8 +911,7 @@ export default function Landing() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-gray-900 text-white py-5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {" "}
@@ -995,7 +980,7 @@ export default function Landing() {
               </ul>
             </div>
           </div>
-          <div className="mt-12 pt-8 border-t border-gray-800 text-center text-gray-400">
+          <div className="mt-2 pt-4 border-t border-gray-800 text-center text-gray-400">
             <p>
               &copy; {new Date().getFullYear()} BookNest. All rights reserved.
             </p>

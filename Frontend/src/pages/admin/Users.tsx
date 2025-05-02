@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../services/api";
@@ -33,7 +31,6 @@ const Users = () => {
     try {
       await api.put(`/users/${userId}/block`);
 
-      // Update user status locally
       setUsers(
         users.map((user) =>
           user._id === userId ? { ...user, isBlocked: !isBlocked } : user

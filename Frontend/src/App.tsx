@@ -30,12 +30,10 @@ function App() {
   const { user, loading } = useAuth()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
-  // Handle login logic
   const handleLogin = () => {
     setIsAuthenticated(true)
   }
 
-  // Handle logout logic
   const handleLogout = () => {
     setIsAuthenticated(false)
   }

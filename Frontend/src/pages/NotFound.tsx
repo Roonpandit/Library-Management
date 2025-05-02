@@ -1,11 +1,16 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 const NotFound = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8 text-center">
         <div>
-          <svg className="w-20 h-20 mx-auto text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg
+            className="w-20 h-20 mx-auto text-blue-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -13,8 +18,12 @@ const NotFound = () => {
               d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">404 - Page Not Found</h2>
-          <p className="mt-2 text-sm text-gray-600">The page you are looking for doesn't exist or has been moved.</p>
+          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+            404 - Page Not Found
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            The page you are looking for doesn't exist or has been moved.
+          </p>
         </div>
 
         <div>
@@ -27,7 +36,7 @@ const NotFound = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default NotFound
+export default NotFound;

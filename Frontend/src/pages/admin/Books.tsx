@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../services/api";
@@ -21,7 +19,6 @@ const Books = () => {
         const { data } = await api.get<Book[]>("/books");
         setBooks(data);
 
-        // Extract unique genres
         const uniqueGenres = Array.from(
           new Set(data.map((book) => book.genre))
         );

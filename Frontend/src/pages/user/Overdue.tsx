@@ -1,40 +1,37 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import { api } from "../../services/api"
-import type { Borrow } from "../../types"
-import BorrowCard from "../../components/BorrowCard"
+import { useState, useEffect } from "react";
+import { api } from "../../services/api";
+import type { Borrow } from "../../types";
+import BorrowCard from "../../components/BorrowCard";
 
 const Overdue = () => {
-  const [borrows, setBorrows] = useState<Borrow[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [borrows, setBorrows] = useState<Borrow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchOverdueBooks = async () => {
       try {
-        setLoading(true)
-        const { data } = await api.get<Borrow[]>("/dashboard/user/overdue")
-        setBorrows(data)
+        setLoading(true);
+        const { data } = await api.get<Borrow[]>("/dashboard/user/overdue");
+        setBorrows(data);
       } catch (error) {
-        console.error("Error fetching overdue books:", error)
-        setError("Failed to fetch overdue books. Please try again later.")
+        console.error("Error fetching overdue books:", error);
+        setError("Failed to fetch overdue books. Please try again later.");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchOverdueBooks()
-  }, [])
+    fetchOverdueBooks();
+  }, []);
 
   const handleReturn = async (borrowId: string) => {
     try {
-      // Update the borrow status locally
-      setBorrows(borrows.filter((borrow) => borrow._id !== borrowId))
+      setBorrows(borrows.filter((borrow) => borrow._id !== borrowId));
     } catch (error) {
-      console.error("Error updating borrow status:", error)
+      console.error("Error updating borrow status:", error);
     }
-  }
+  };
 
   return (
     <div className="container mx-auto">
@@ -48,7 +45,12 @@ const Overdue = () => {
         <div className="p-4 text-red-700 bg-red-100 rounded-md">{error}</div>
       ) : borrows.length === 0 ? (
         <div className="p-8 text-center text-gray-500 bg-white rounded-lg shadow-sm">
-          <svg className="w-12 h-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg
+            className="w-12 h-12 mx-auto text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -63,7 +65,12 @@ const Overdue = () => {
         <div>
           <div className="p-4 mb-6 text-yellow-800 bg-yellow-100 rounded-md">
             <div className="flex">
-              <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -74,8 +81,9 @@ const Overdue = () => {
               <div>
                 <p className="font-medium">Attention!</p>
                 <p className="text-sm">
-                  You have {borrows.length} overdue {borrows.length === 1 ? "book" : "books"}. Please return them as
-                  soon as possible to avoid additional fees.
+                  You have {borrows.length} overdue{" "}
+                  {borrows.length === 1 ? "book" : "books"}. Please return them
+                  as soon as possible to avoid additional fees.
                 </p>
               </div>
             </div>
@@ -83,13 +91,17 @@ const Overdue = () => {
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {borrows.map((borrow) => (
-              <BorrowCard key={borrow._id} borrow={borrow} onReturn={handleReturn} />
+              <BorrowCard
+                key={borrow._id}
+                borrow={borrow}
+                onReturn={handleReturn}
+              />
             ))}
           </div>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Overdue
+export default Overdue;

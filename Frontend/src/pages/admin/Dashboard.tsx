@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../services/api";
@@ -20,27 +18,23 @@ const Dashboard = () => {
       try {
         setLoading(true);
 
-        // Fetch dashboard stats
         const { data: stats } = await api.get<AdminDashboardData>(
           "/dashboard/admin"
         );
         setDashboardData(stats);
 
-        // Fetch active users
         const { data: users } = await api.get<User[]>(
           "/dashboard/admin/active-users"
         );
-        setActiveUsers(users.slice(0, 5)); // Show only 5 active users
+        setActiveUsers(users.slice(0, 5));
 
-        // Fetch recent books
         const { data: books } = await api.get<Book[]>("/dashboard/admin/books");
-        setRecentBooks(books.slice(0, 5)); // Show only 5 recent books
+        setRecentBooks(books.slice(0, 5));
 
-        // Fetch overdue payments
         const { data: borrows } = await api.get<Borrow[]>(
           "/dashboard/admin/overdue-payments"
         );
-        setOverduePayments(borrows.slice(0, 5)); // Show only 5 overdue payments
+        setOverduePayments(borrows.slice(0, 5));
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
         setError("Failed to fetch dashboard data. Please try again later.");
@@ -70,7 +64,6 @@ const Dashboard = () => {
     <div className="container mx-auto">
       <h1 className="mb-6 text-2xl font-bold text-gray-900">Admin Dashboard</h1>
 
-      {/* Stats */}
       <div className="grid grid-cols-1 gap-6 mb-8 sm:grid-cols-2 lg:grid-cols-5">
         <div className="p-6 bg-white rounded-[10px] shadow-sm hover:bg-gray-100 hover:shadow-lg hover:scale-105 transition-all duration-300">
           <div className="flex items-center">
@@ -217,7 +210,6 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Active Users */}
         <div className="bg-white rounded-[10px] shadow-sm border border-blue-200">
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <h2 className="text-lg font-bold text-gray-900">Active Users</h2>
@@ -265,9 +257,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Recent Books */}
         <div className="bg-white rounded-[10px] shadow-sm border border-blue-200">
-
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <h2 className="text-lg font-bold text-gray-900">Recent Books</h2>
             <Link
@@ -349,7 +339,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Overdue Payments */}
         <div className="bg-white rounded-[10px] shadow-sm lg:col-span-2 border border-blue-200">
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <h2 className="text-lg font-bold text-gray-900">

@@ -1,4 +1,4 @@
-declare module 'html2pdf.js' {
+declare module "html2pdf.js" {
   interface Html2PdfOptions {
     margin?: number | number[];
     filename?: string;
@@ -14,7 +14,7 @@ declare module 'html2pdf.js' {
     jsPDF?: {
       unit?: string;
       format?: string;
-      orientation?: 'portrait' | 'landscape';
+      orientation?: "portrait" | "landscape";
       [key: string]: any;
     };
     [key: string]: any;
@@ -33,7 +33,10 @@ declare module 'html2pdf.js' {
   }
 
   function html2pdf(): Html2PdfInstance;
-  function html2pdf(element: HTMLElement, options?: Html2PdfOptions): Html2PdfInstance;
+  function html2pdf(
+    element: HTMLElement,
+    options?: Html2PdfOptions
+  ): Html2PdfInstance;
 
   export default html2pdf;
-} 
+}

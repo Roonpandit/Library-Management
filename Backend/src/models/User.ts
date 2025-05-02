@@ -1,12 +1,12 @@
-import mongoose, { Schema, Document } from 'mongoose';
-import bcrypt from 'bcryptjs';
+import mongoose, { Schema, Document } from "mongoose";
+import bcrypt from "bcryptjs";
 
 export interface BorrowedBook {
   bookId: mongoose.Types.ObjectId;
   borrowDate: Date;
   borrowedTill: Date;
   returnDate?: Date;
-  paymentStatus?: 'pending' | 'paid';
+  paymentStatus?: "pending" | "paid";
   bill?: {
     amount: number;
     lateFee: number;
@@ -22,7 +22,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   borrowedBooks: BorrowedBook[];
-  role: 'user' | 'admin';
+  role: "user" | "admin";
   isBlocked: boolean;
   notifications: Array<{
     message: string;
@@ -36,49 +36,49 @@ const UserSchema: Schema = new Schema(
   {
     name: {
       type: String,
-      required: [true, 'Please add a name']
+      required: [true, "Please add a name"],
     },
     email: {
       type: String,
-      required: [true, 'Please add an email'],
+      required: [true, "Please add an email"],
       unique: true,
       match: [
         /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-        'Please add a valid email'
-      ]
+        "Please add a valid email",
+      ],
     },
     password: {
       type: String,
-      required: [true, 'Please add a password'],
+      required: [true, "Please add a password"],
       minlength: 6,
-      select: false
+      select: false,
     },
     role: {
       type: String,
-      enum: ['user', 'admin'],
-      default: 'user'
+      enum: ["user", "admin"],
+      default: "user",
     },
     borrowedBooks: [
       {
         bookId: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'Book'
+          ref: "Book",
         },
         borrowDate: {
           type: Date,
-          default: Date.now
+          default: Date.now,
         },
         borrowedTill: {
           type: Date,
-          required: true
+          required: true,
         },
         returnDate: {
-          type: Date
+          type: Date,
         },
         paymentStatus: {
           type: String,
-          enum: ['pending', 'paid'],
-          default: 'pending'
+          enum: ["pending", "paid"],
+          default: "pending",
         },
         bill: {
           amount: Number,
@@ -86,39 +86,38 @@ const UserSchema: Schema = new Schema(
           totalAmount: Number,
           isLate: Boolean,
           generatedDate: Date,
-          bookISBN: String
-        }
-      }
+          bookISBN: String,
+        },
+      },
     ],
     isBlocked: {
       type: Boolean,
-      default: false
+      default: false,
     },
     notifications: [
       {
         message: {
           type: String,
-          required: true
+          required: true,
         },
         date: {
           type: Date,
-          default: Date.now
+          default: Date.now,
         },
         read: {
           type: Boolean,
-          default: false
-        }
-      }
-    ]
+          default: false,
+        },
+      },
+    ],
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 
-// Encrypt password using bcrypt
-UserSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
+UserSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
     next();
   }
 
@@ -126,9 +125,8 @@ UserSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-// Match user entered password to hashed password in database
 UserSchema.methods.matchPassword = async function (enteredPassword: string) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-export default mongoose.model<IUser>('User', UserSchema);
+export default mongoose.model<IUser>("User", UserSchema);

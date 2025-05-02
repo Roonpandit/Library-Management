@@ -1,12 +1,12 @@
-import mongoose, { Schema, Document } from 'mongoose';
-  
+import mongoose, { Schema, Document } from "mongoose";
+
 export interface IBorrow extends Document {
   userId: mongoose.Types.ObjectId;
   bookId: mongoose.Types.ObjectId;
   borrowDate: Date;
   borrowedTill: Date;
   returnDate?: Date;
-  paymentStatus: 'pending' | 'paid';
+  paymentStatus: "pending" | "paid";
   bill?: {
     amount: number;
     lateFee: number;
@@ -21,29 +21,29 @@ const BorrowSchema: Schema = new Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
+      ref: "User",
+      required: true,
     },
     bookId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Book',
-      required: true
+      ref: "Book",
+      required: true,
     },
     borrowDate: {
       type: Date,
-      default: Date.now
+      default: Date.now,
     },
     borrowedTill: {
       type: Date,
-      required: true
+      required: true,
     },
     returnDate: {
-      type: Date
+      type: Date,
     },
     paymentStatus: {
       type: String,
-      enum: ['pending', 'paid'],
-      default: 'pending'
+      enum: ["pending", "paid"],
+      default: "pending",
     },
     bill: {
       amount: Number,
@@ -51,12 +51,12 @@ const BorrowSchema: Schema = new Schema(
       totalAmount: Number,
       isLate: Boolean,
       generatedDate: Date,
-      bookISBN: String
-    }
+      bookISBN: String,
+    },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 
-export default mongoose.model<IBorrow>('Borrow', BorrowSchema);
+export default mongoose.model<IBorrow>("Borrow", BorrowSchema);

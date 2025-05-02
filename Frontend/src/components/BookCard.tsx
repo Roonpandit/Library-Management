@@ -10,7 +10,6 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
   return (
     <div className="overflow-hidden bg-white shadow-sm rounded-[10px] border border-blue-200">
       {" "}
-      {/* Removed fixed height container, letting image determine its own height */}
       <div className="bg-gray-200">
         {book.imageUrl ? (
           <img

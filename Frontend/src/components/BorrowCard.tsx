@@ -1,5 +1,3 @@
-"use client";
-
 import type React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -36,7 +34,6 @@ const BorrowCard: React.FC<BorrowCardProps> = ({
     new Date(borrow.borrowedTill) < new Date() && !borrow.returnDate;
 
   useEffect(() => {
-    // Update billState if borrow.bill changes
     if (borrow.bill) {
       setBillState(borrow.bill);
     }
@@ -83,7 +80,7 @@ const BorrowCard: React.FC<BorrowCardProps> = ({
       setError(null);
       const { data } = await api.put(`/borrow/${borrow._id}/bill`, {
         borrowId: borrow._id,
-        lateFee: 5, // You can make this dynamic or use a default value
+        lateFee: 5,
       });
       setBillState(data.bill);
       onGenerateBill(borrow._id, data.bill);
@@ -246,7 +243,6 @@ const BorrowCard: React.FC<BorrowCardProps> = ({
         </div>
       </div>
 
-      {/* Bill Modal */}
       {(billState || borrow.bill) && (
         <BillModal
           isOpen={showBillModal}

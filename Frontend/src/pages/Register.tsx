@@ -1,43 +1,47 @@
-"use client"
-
-import { useState, type FormEvent, useEffect } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { useAuth } from "../contexts/AuthContext"
+import { useState, type FormEvent, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const Register = () => {
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [passwordError, setPasswordError] = useState("")
-  const { register, loading, error, clearError, registrationSuccess } = useAuth()
-  const navigate = useNavigate()
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const { register, loading, error, clearError, registrationSuccess } =
+    useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (registrationSuccess) {
-      navigate("/login?registered=true")
+      navigate("/login?registered=true");
     }
-  }, [registrationSuccess, navigate])
+  }, [registrationSuccess, navigate]);
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (password !== confirmPassword) {
-      setPasswordError("Passwords do not match")
-      return
+      setPasswordError("Passwords do not match");
+      return;
     }
 
-    setPasswordError("")
-    await register(name, email.toLowerCase(), password)
-  }
+    setPasswordError("");
+    await register(name, email.toLowerCase(), password);
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-xl shadow-lg">
+      <div className="w-full max-w-md space-y-8 bg-white p-5 rounded-xl shadow-lg">
         <div>
           <div className="flex justify-center">
-            <div className="bg-blue-100 p-3 rounded-full">
-              <svg className="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="rounded-full">
+              <svg
+                className="w-20 h-20 text-blue-800 mt-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -47,30 +51,55 @@ const Register = () => {
               </svg>
             </div>
           </div>
-          <h2 className="mt-6 text-4xl font-extrabold text-center text-gray-900 font-['Times_New_Roman']">Create your account</h2>
-          <p className="mt-2 text-sm text-center text-gray-600">
+          <h2 className="mt-0 text-4xl font-extrabold text-center text-gray-900 font-['Times_New_Roman']">
+            Create your account
+          </h2>
+          <p className="mt-0 text-sm text-center text-gray-600">
             Already have an account?{" "}
-            <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-300">
+            <Link
+              to="/login"
+              className="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-300"
+            >
               Sign in here
             </Link>
           </p>
         </div>
 
         {error && (
-          <div className="p-4 text-sm text-red-700 bg-red-100 rounded-[10px] border border-red-200 flex justify-between items-center" role="alert">
+          <div
+            className="p-4 text-sm text-red-700 bg-red-100 rounded-[10px] border border-red-200 flex justify-between items-center"
+            role="alert"
+          >
             <span className="font-medium">{error}</span>
-            <button onClick={clearError} className="text-red-700 hover:text-red-900 focus:outline-none" aria-label="Close">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            <button
+              onClick={clearError}
+              className="text-red-700 hover:text-red-900 focus:outline-none"
+              aria-label="Close"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
         )}
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-0 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700 mb-0"
+              >
                 Full Name
               </label>
               <input
@@ -81,12 +110,15 @@ const Register = () => {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="block w-full px-4 py-3 text-gray-900 border border-gray-300 rounded-[10px] focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 sm:text-sm"
+                className="block w-full px-4 py-3 text-gray-900 border border-gray-300 rounded-[10px] focus:ring-2 focus:ring-blue-200 focus:border-blue-200 transition-colors duration-200 sm:text-sm"
                 placeholder="John Doe"
               />
             </div>
             <div>
-              <label htmlFor="email-address" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="email-address"
+                className="block text-sm font-medium text-gray-700 mb-0"
+              >
                 Email address
               </label>
               <input
@@ -102,7 +134,10 @@ const Register = () => {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-0"
+              >
                 Password
               </label>
               <input
@@ -118,7 +153,10 @@ const Register = () => {
               />
             </div>
             <div>
-              <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="confirm-password"
+                className="block text-sm font-medium text-gray-700 mb-0"
+              >
                 Confirm Password
               </label>
               <input
@@ -134,8 +172,18 @@ const Register = () => {
               />
               {passwordError && (
                 <p className="mt-2 text-sm text-red-600 font-medium flex items-center">
-                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  <svg
+                    className="w-4 h-4 mr-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    />
                   </svg>
                   {passwordError}
                 </p>
@@ -151,7 +199,11 @@ const Register = () => {
             >
               {loading ? (
                 <span className="flex items-center">
-                  <svg className="w-5 h-5 mr-2 -ml-1 text-white animate-spin" fill="none" viewBox="0 0 24 24">
+                  <svg
+                    className="w-5 h-5 mr-2 -ml-1 text-white animate-spin"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
                     <circle
                       className="opacity-25"
                       cx="12"
@@ -173,21 +225,27 @@ const Register = () => {
               )}
             </button>
           </div>
-          
+
           <div className="text-xs text-center text-gray-500 mt-4">
             By creating an account, you agree to our
-            <Link to="/terms" className="text-blue-600 hover:text-blue-500 ml-1 transition-colors duration-300">
+            <Link
+              to="/terms"
+              className="text-blue-600 hover:text-blue-500 ml-1 transition-colors duration-300"
+            >
               Terms of Service
-            </Link>
-            {" "}and{" "}
-            <Link to="/privacy" className="text-blue-600 hover:text-blue-500 transition-colors duration-300">
+            </Link>{" "}
+            and{" "}
+            <Link
+              to="/privacy"
+              className="text-blue-600 hover:text-blue-500 transition-colors duration-300"
+            >
               Privacy Policy
             </Link>
           </div>
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

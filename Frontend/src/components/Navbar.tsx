@@ -1,10 +1,10 @@
-import type React from "react"
+import type React from "react";
 
-import { Link, useNavigate } from "react-router-dom"
-import { useAuth } from "../contexts/AuthContext"
-import { useState, useRef, useEffect } from "react"
-import { api } from "../services/api"
-import type { Notification } from "../types"
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { useState, useRef, useEffect } from "react";
+import { api } from "../services/api";
+import type { Notification } from "../types";
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -13,73 +13,82 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onLogout }) => {
-  const { user, logout: authLogout } = useAuth()
-  const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [notificationsOpen, setNotificationsOpen] = useState(false)
-  const [notifications, setNotifications] = useState<Notification[]>([])
-  const [unreadCount, setUnreadCount] = useState(0)
-  const dropdownRef = useRef<HTMLDivElement>(null)
-  const notificationsRef = useRef<HTMLDivElement>(null)
+  const { user, logout: authLogout } = useAuth();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const notificationsRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  // Use the provided onLogout function or fall back to the auth context logout
   const handleLogout = () => {
     if (onLogout) {
       onLogout();
     }
-    // First clear the auth state
     authLogout();
-    };
+  };
 
   useEffect(() => {
     const fetchNotifications = async () => {
       if (user) {
         try {
-          const { data } = await api.get("/auth/profile")
+          const { data } = await api.get("/auth/profile");
           if (data.notifications) {
-            // Sort notifications by date in descending order (newest first)
             const sortedNotifications = [...data.notifications].sort(
               (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
             );
-            setNotifications(sortedNotifications)
-            setUnreadCount(sortedNotifications.filter((n: Notification) => !n.read).length)
+            setNotifications(sortedNotifications);
+            setUnreadCount(
+              sortedNotifications.filter((n: Notification) => !n.read).length
+            );
           }
         } catch (error) {
-          console.error("Failed to fetch notifications", error)
+          console.error("Failed to fetch notifications", error);
         }
       }
-    }
+    };
 
-    fetchNotifications()
-  }, [user])
+    fetchNotifications();
+  }, [user]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setDropdownOpen(false)
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setDropdownOpen(false);
       }
-      if (notificationsRef.current && !notificationsRef.current.contains(event.target as Node)) {
-        setNotificationsOpen(false)
+      if (
+        notificationsRef.current &&
+        !notificationsRef.current.contains(event.target as Node)
+      ) {
+        setNotificationsOpen(false);
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const markAsRead = async (id: string) => {
     try {
-      await api.put(`/users/notifications/${id}`)
+      await api.put(`/users/notifications/${id}`);
       setNotifications(
-        notifications.map((notification) => (notification._id === id ? { ...notification, read: true } : notification)),
-      )
-      setUnreadCount((prev) => Math.max(0, prev - 1))
+        notifications.map((notification) =>
+          notification._id === id
+            ? { ...notification, read: true }
+            : notification
+        )
+      );
+      setUnreadCount((prev) => Math.max(0, prev - 1));
     } catch (error) {
-      console.error("Failed to mark notification as read", error)
+      console.error("Failed to mark notification as read", error);
     }
-  }
+  };
 
   return (
     <nav className="bg-white border-b border-gray-200">
@@ -88,17 +97,32 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onLogout }) => {
           <div className="flex">
             <button
               type="button"
-              className="inline-flex items-center justify-center p-2 text-gray-400 rounded-md md:hidden hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+              className="inline-flex items-center justify-center p-2 text-gray-400 rounded-md md:hidden hover:text-blue-700  "
               onClick={onMenuClick}
             >
               <span className="sr-only">Open sidebar</span>
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              <svg
+                className="w-6 h-"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             </button>
             <div className="flex items-center flex-shrink-0 ml-2 md:ml-0">
-              <Link to="/" className="flex items-center">
-                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <Link to="/dashboard" className="flex items-center">
+                <svg
+                  className="w-8 h-8 text-blue-800"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -106,25 +130,31 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onLogout }) => {
                     d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                   />
                 </svg>
-                <span className="ml-2 text-2xl font-bold text-gray-900" style={{ fontFamily: 'Times New Roman, Times, serif' }}>
-  BookNest
-</span>
-
+                <span
+                  className="ml-2 text-2xl font-bold text-blue-900"
+                  style={{ fontFamily: "Times New Roman, Times, serif" }}
+                >
+                  BookNest
+                </span>
               </Link>
             </div>
           </div>
 
           {user ? (
             <div className="flex items-center">
-              {/* Notifications */}
               <div className="relative ml-3" ref={notificationsRef}>
                 <button
                   type="button"
-                  className="relative p-1 text-gray-400 bg-white rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="relative p-1 text-gray-400 bg-white rounded-full hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   onClick={() => setNotificationsOpen(!notificationsOpen)}
                 >
                   <span className="sr-only">View notifications</span>
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -150,10 +180,14 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onLogout }) => {
                           notifications.map((notification) => (
                             <div
                               key={notification._id}
-                              className={`px-4 py-2 text-sm ${notification.read ? "bg-white" : "bg-blue-50"}`}
+                              className={`px-4 py-2 text-sm ${
+                                notification.read ? "bg-white" : "bg-blue-50"
+                              }`}
                             >
                               <div className="flex justify-between">
-                                <p className="font-medium text-gray-900">{notification.message}</p>
+                                <p className="font-medium text-gray-900">
+                                  {notification.message}
+                                </p>
                                 {!notification.read && (
                                   <button
                                     onClick={() => markAsRead(notification._id)}
@@ -164,12 +198,16 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onLogout }) => {
                                 )}
                               </div>
                               <p className="text-xs text-gray-500">
-                                {new Date(notification.date).toLocaleDateString()}
+                                {new Date(
+                                  notification.date
+                                ).toLocaleDateString()}
                               </p>
                             </div>
                           ))
                         ) : (
-                          <div className="px-4 py-2 text-sm text-gray-500">No notifications</div>
+                          <div className="px-4 py-2 text-sm text-gray-500">
+                            No notifications
+                          </div>
                         )}
                       </div>
                     </div>
@@ -177,7 +215,6 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onLogout }) => {
                 )}
               </div>
 
-              {/* Profile dropdown */}
               <div className="relative ml-3" ref={dropdownRef}>
                 <button
                   type="button"
@@ -199,18 +236,18 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onLogout }) => {
                       </div>
                       <Link
                         to="/profile"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:text-blue-800"
                         onClick={() => setDropdownOpen(false)}
                       >
                         Your Profile
                       </Link>
                       <button
                         onClick={() => {
-                          setDropdownOpen(false)
-                          handleLogout()
-                          navigate("/")
+                          setDropdownOpen(false);
+                          handleLogout();
+                          navigate("/");
                         }}
-                        className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
+                        className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:text-red-600"
                       >
                         Sign out
                       </button>
@@ -232,7 +269,7 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick, onLogout }) => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

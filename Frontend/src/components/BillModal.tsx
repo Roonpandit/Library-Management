@@ -17,6 +17,7 @@ const BillModal: React.FC<BillModalProps> = ({
   isOpen,
   onClose,
   bill,
+
   borrow,
   book,
   user,
@@ -38,7 +39,6 @@ const BillModal: React.FC<BillModalProps> = ({
 
     const originalContents = document.body.innerHTML;
 
-    // Create a style element to hide headers and footers
     const style = document.createElement("style");
     style.innerHTML = `
       @media print {
@@ -60,16 +60,12 @@ const BillModal: React.FC<BillModalProps> = ({
       }
     `;
 
-    // Add the style to the head
     document.head.appendChild(style);
 
-    // Set the content
     document.body.innerHTML = printContent.innerHTML;
 
-    // Print
     window.print();
 
-    // Remove the style and restore the content
     document.head.removeChild(style);
     document.body.innerHTML = originalContents;
     window.location.reload();
@@ -79,7 +75,6 @@ const BillModal: React.FC<BillModalProps> = ({
     const element = printRef.current;
     if (!element) return;
 
-    // Configuration for PDF export
     const options = {
       margin: [10, 10, 10, 10],
       filename: `BookNest_Receipt_${
@@ -94,23 +89,19 @@ const BillModal: React.FC<BillModalProps> = ({
       },
     };
 
-    // Generate PDF
     html2pdf().from(element).set(options).save();
   };
 
-  // Get ISBN either from book object or bill object
   const isbn = book?.ISBN || bill.bookISBN;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-        {/* Background overlay */}
         <div
           className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"
           onClick={onClose}
         ></div>
 
-        {/* Modal panel */}
         <div className="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-[10px] shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
           <div className="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4 ">
             <div className="sm:flex sm:items-start">

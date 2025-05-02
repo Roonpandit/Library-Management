@@ -1,16 +1,17 @@
-import { Request, Response, NextFunction } from 'express';
-import { Schema, ObjectSchema } from 'joi';
-import { validate } from '../utils/validation';
+import { Request, Response, NextFunction } from "express";
+import { Schema, ObjectSchema } from "joi";
+import { validate } from "../utils/validation";
 
-export const validateResource = (schema: ObjectSchema) => (req: Request, res: Response, next: NextFunction) => {
-  const resource = req.body;
-  const { valid, data, errors } = validate(resource, schema);
+export const validateResource =
+  (schema: ObjectSchema) =>
+  (req: Request, res: Response, next: NextFunction) => {
+    const resource = req.body;
+    const { valid, data, errors } = validate(resource, schema);
 
-  if (!valid) {
-    return res.status(400).json({ errors });
-  }
+    if (!valid) {
+      return res.status(400).json({ errors });
+    }
 
-  // Add validated data to request
-  req.body = data;
-  return next();
-};
+    req.body = data;
+    return next();
+  };

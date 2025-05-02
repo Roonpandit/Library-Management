@@ -1,46 +1,45 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import { api } from "../services/api"
-import type { Book } from "../types"
-import BookCard from "../components/BookCard"
+import { useState, useEffect } from "react";
+import { api } from "../services/api";
+import type { Book } from "../types";
+import BookCard from "../components/BookCard";
 
 const Books = () => {
-  const [books, setBooks] = useState<Book[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [genre, setGenre] = useState("")
-  const [genres, setGenres] = useState<string[]>([])
+  const [books, setBooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [genre, setGenre] = useState("");
+  const [genres, setGenres] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        setLoading(true)
-        const { data } = await api.get<Book[]>("/books")
-        setBooks(data)
+        setLoading(true);
+        const { data } = await api.get<Book[]>("/books");
+        setBooks(data);
 
-        // Extract unique genres
-        const uniqueGenres = Array.from(new Set(data.map((book) => book.genre)))
-        setGenres(uniqueGenres)
+        const uniqueGenres = Array.from(
+          new Set(data.map((book) => book.genre))
+        );
+        setGenres(uniqueGenres);
       } catch (error) {
-        console.error("Error fetching books:", error)
-        setError("Failed to fetch books. Please try again later.")
+        console.error("Error fetching books:", error);
+        setError("Failed to fetch books. Please try again later.");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchBooks()
-  }, [])
+    fetchBooks();
+  }, []);
 
   const filteredBooks = books.filter((book) => {
     const matchesSearch =
       book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      book.author.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesGenre = genre === "" || book.genre === genre
-    return matchesSearch && matchesGenre
-  })
+      book.author.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesGenre = genre === "" || book.genre === genre;
+    return matchesSearch && matchesGenre;
+  });
 
   return (
     <div className="container mx-auto">
@@ -49,7 +48,10 @@ const Books = () => {
       <div className="p-4 mb-6 bg-white rounded-[10px] border border-blue-200 shadow-sm">
         <div className="flex flex-col gap-4 md:flex-row">
           <div className="flex-1">
-            <label htmlFor="search" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="search"
+              className="block text-sm font-medium text-gray-700"
+            >
               Search
             </label>
             <input
@@ -62,7 +64,10 @@ const Books = () => {
             />
           </div>
           <div className="w-full md:w-64">
-            <label htmlFor="genre" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="genre"
+              className="block text-sm font-medium text-gray-700"
+            >
               Filter by Genre
             </label>
             <select
@@ -90,7 +95,12 @@ const Books = () => {
         <div className="p-4 text-red-700 bg-red-100 rounded-md">{error}</div>
       ) : filteredBooks.length === 0 ? (
         <div className="p-8 text-center text-gray-500">
-          <svg className="w-12 h-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg
+            className="w-12 h-12 mx-auto text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -109,7 +119,7 @@ const Books = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Books
+export default Books;

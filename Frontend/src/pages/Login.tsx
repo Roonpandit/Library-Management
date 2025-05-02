@@ -1,54 +1,60 @@
-import React, { useState, type FormEvent, useEffect } from "react"
-import { Link, useNavigate, useLocation } from "react-router-dom"
-import { useAuth } from "../contexts/AuthContext"
+import React, { useState, type FormEvent, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 interface LoginProps {
   onLogin?: () => void;
 }
 
 const Login: React.FC<LoginProps> = ({ onLogin }) => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [successMessage, setSuccessMessage] = useState<string | null>(null)
-  const { login, loading, error, clearError, clearRegistrationSuccess, user } = useAuth()
-  const navigate = useNavigate()
-  const location = useLocation()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const { login, loading, error, clearError, clearRegistrationSuccess, user } =
+    useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search)
-    if (params.get('registered') === 'true') {
-      setSuccessMessage('Account created successfully! Please login with your credentials.')
-      clearRegistrationSuccess()
+    const params = new URLSearchParams(location.search);
+    if (params.get("registered") === "true") {
+      setSuccessMessage(
+        "Account created successfully! Please login with your credentials."
+      );
+      clearRegistrationSuccess();
     }
-  }, [location, clearRegistrationSuccess])
+  }, [location, clearRegistrationSuccess]);
 
   useEffect(() => {
     if (user) {
-      navigate('/dashboard')
+      navigate("/dashboard");
     }
-  }, [user, navigate])
+  }, [user, navigate]);
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-    setSuccessMessage(null)
+    e.preventDefault();
+    setSuccessMessage(null);
     try {
-      await login(email.toLowerCase(), password)
+      await login(email.toLowerCase(), password);
       if (onLogin) {
-        onLogin()
+        onLogin();
       }
-      navigate('/dashboard')
-    } catch (err) {
-      // Error handling is already done in the Auth context
-    }
-  }
+      navigate("/dashboard");
+    } catch (err) {}
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-xl shadow-lg">
         <div>
           <div className="flex justify-center">
-            <div className="bg-blue-100 p-3 rounded-full">
-              <svg className="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="rounded-full">
+              <svg
+                className="w-20 h-20 text-blue-800"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -58,33 +64,71 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               </svg>
             </div>
           </div>
-          <h2 className="mt-6 text-4xl font-extrabold text-center text-gray-900 font-['Times_New_Roman']">
-  Welcome back
-</h2>          <p className="mt-2 text-sm text-center text-gray-600">
+          <h2 className="mt-0 text-4xl font-extrabold text-center text-gray-900 font-['Times_New_Roman']">
+            Welcome back
+          </h2>{" "}
+          <p className="mt-2 text-sm text-center text-gray-600">
             Don't have an account?{" "}
-            <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-300">
+            <Link
+              to="/register"
+              className="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-300"
+            >
               Sign up now
             </Link>
           </p>
         </div>
 
         {successMessage && (
-          <div className="p-4 text-sm text-green-700 bg-green-100 rounded-lg border border-green-200 flex justify-between items-center" role="alert">
+          <div
+            className="p-4 text-sm text-green-700 bg-green-100 rounded-lg border border-green-200 flex justify-between items-center"
+            role="alert"
+          >
             <span className="font-medium">{successMessage}</span>
-            <button onClick={() => setSuccessMessage(null)} className="text-green-700 hover:text-green-900 focus:outline-none" aria-label="Close">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            <button
+              onClick={() => setSuccessMessage(null)}
+              className="text-green-700 hover:text-green-900 focus:outline-none"
+              aria-label="Close"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
         )}
 
         {error && (
-          <div className="p-4 text-sm text-red-700 bg-red-100 rounded-lg border border-red-200 flex justify-between items-center" role="alert">
+          <div
+            className="p-4 text-sm text-red-700 bg-red-100 rounded-lg border border-red-200 flex justify-between items-center"
+            role="alert"
+          >
             <span className="font-medium">{error}</span>
-            <button onClick={clearError} className="text-red-700 hover:text-red-900 focus:outline-none" aria-label="Close">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            <button
+              onClick={clearError}
+              className="text-red-700 hover:text-red-900 focus:outline-none"
+              aria-label="Close"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
@@ -93,7 +137,10 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
-              <label htmlFor="email-address" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="email-address"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Email address
               </label>
               <input
@@ -109,7 +156,10 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Password
               </label>
               <input
@@ -134,7 +184,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             >
               {loading ? (
                 <span className="flex items-center">
-                  <svg className="w-5 h-5 mr-2 -ml-1 text-white animate-spin" fill="none" viewBox="0 0 24 24">
+                  <svg
+                    className="w-5 h-5 mr-2 -ml-1 text-white animate-spin"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
                     <circle
                       className="opacity-25"
                       cx="12"
@@ -159,7 +213,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

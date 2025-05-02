@@ -1,5 +1,5 @@
-import React from 'react';
-import type { Bill } from '../types';
+import React from "react";
+import type { Bill } from "../types";
 
 interface BillDetailsProps {
   bill: Bill;
@@ -7,9 +7,17 @@ interface BillDetailsProps {
   onPrint?: () => void;
 }
 
-const BillDetails: React.FC<BillDetailsProps> = ({ bill, isPreview = false, onPrint }) => {
+const BillDetails: React.FC<BillDetailsProps> = ({
+  bill,
+  isPreview = false,
+  onPrint,
+}) => {
   return (
-    <div className={`p-4 rounded-[10px] ${isPreview ? 'bg-gray-50' : 'border border-blue-200'}`}>
+    <div
+      className={`p-4 rounded-[10px] ${
+        isPreview ? "bg-gray-50" : "border border-blue-200"
+      }`}
+    >
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-medium text-gray-900">Bill Details</h3>
         {onPrint && (
@@ -34,7 +42,11 @@ const BillDetails: React.FC<BillDetailsProps> = ({ bill, isPreview = false, onPr
         <p className="font-medium text-right">${bill.amount.toFixed(2)}</p>
 
         <p className="text-gray-500">Late Fee:</p>
-        <p className={`font-medium text-right ${bill.lateFee > 0 ? 'text-red-600' : ''}`}>
+        <p
+          className={`font-medium text-right ${
+            bill.lateFee > 0 ? "text-red-600" : ""
+          }`}
+        >
           ${bill.lateFee.toFixed(2)}
         </p>
 
@@ -49,7 +61,7 @@ const BillDetails: React.FC<BillDetailsProps> = ({ bill, isPreview = false, onPr
 
         <p className="text-gray-800 font-medium">Total Amount:</p>
         <p className="font-bold text-right">${bill.totalAmount.toFixed(2)}</p>
-        
+
         {bill.generatedDate && (
           <>
             <p className="text-gray-500">Generated On:</p>
@@ -63,4 +75,4 @@ const BillDetails: React.FC<BillDetailsProps> = ({ bill, isPreview = false, onPr
   );
 };
 
-export default BillDetails; 
+export default BillDetails;
